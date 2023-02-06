@@ -1,4 +1,4 @@
 bucket         = "terraform-backend-XXXXX"
-key            = "uat/core/tfstate"
+key            = "aws-terraform-eks-template/uat/core/tfstate"
 region         = "eu-south-1"
 dynamodb_table = "terraform-lock"
