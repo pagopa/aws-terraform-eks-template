@@ -23,7 +23,7 @@ variable "env_short" {
 
 variable "vpc" {
   description = "VPC configuration"
-  type        = object({
+  type = object({
     id                  = string
     private_subnets_ids = list(string)
     intra_subnets_ids   = list(string)
