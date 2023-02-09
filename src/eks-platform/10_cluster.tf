@@ -17,7 +17,7 @@ resource "aws_iam_policy" "additional" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.0"
+  version = "~> 19.7.0"
 
   cluster_name                   = local.project
   cluster_version                = var.cluster_version
