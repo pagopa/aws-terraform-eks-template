@@ -1,24 +1,24 @@
 variable "aws_region" {
-  type        = string
   description = "AWS region to create resources. Default Milan"
+  type        = string
   default     = "eu-south-1"
 }
 
 variable "app_name" {
-  type        = string
   description = "App name."
+  type        = string
 }
 
 variable "environment" {
+  description = "Environment"
   type        = string
   default     = "dev"
-  description = "Environment"
 }
 
 variable "env_short" {
+  description = "Evnironment short."
   type        = string
   default     = "d"
-  description = "Evnironment short."
 }
 
 variable "vpc" {
@@ -27,19 +27,24 @@ variable "vpc" {
     id                  = string
     private_subnets_ids = list(string)
     intra_subnets_ids   = list(string)
-    public_subnets_ids  = list(string)
   })
 }
 
 variable "azs" {
-  type        = list(string)
   description = "Availability zones"
+  type        = list(string)
   default     = ["eu-south-1a", "eu-south-1b", "eu-south-1c"]
 }
 
+variable "enable_public_endpoint" {
+  description = "Determines whether the Kubernetes API are public or not"
+  type        = bool
+  default     = false
+}
+
 variable "cluster_version" {
-  type        = string
   description = "Kubernetes <major>.<minor> version to use for the EKS cluster (i.e.: 1.24)"
+  type        = string
   default     = "1.24"
 }
 

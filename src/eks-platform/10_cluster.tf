@@ -21,7 +21,7 @@ module "eks" {
 
   cluster_name                   = local.project
   cluster_version                = var.cluster_version
-  cluster_endpoint_public_access = false
+  cluster_endpoint_public_access = var.enable_public_endpoint
 
   cluster_addons = {
     kube-proxy = {}

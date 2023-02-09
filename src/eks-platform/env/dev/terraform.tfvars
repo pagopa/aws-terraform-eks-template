@@ -9,6 +9,8 @@ vpc = {
   public_subnets_ids  = ["subnet-07085b92d54822442", "subnet-0c1e233657bf5b033", "subnet-033a7add8fbd32090"]
 }
 
+enable_public_endpoint = true
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
