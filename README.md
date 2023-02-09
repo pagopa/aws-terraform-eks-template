@@ -2,53 +2,59 @@
 
 Terraform template repository for infrastructures projects
 
+![Architecture diagram](docs/exports/architecture_phase1.png)
+
 ## How to use this template
+
+### Terraform folders name convention
+
+Inside the folder `src` we have this folders, that contains the terraform files. Here you can find the meaning of the folders
+
+* init: contains all the resources to provision a Terraform backend;
+* core: contains all the basic infrastructure that must be created before to support other layers, and cannot be destroyed every time:
+  * for example we can find the dns, vnet or monitoring.
+* eks-platform: here you can find the setup of your cluster k8s/eks:
+  * for example ingress, rbac, cluster configuration or service accounts.
+* domains: here you can find one or more the business applications.
 
 ### Change the template name
 
 In this template we use `devopslab` or `dvopla` to define ours project, but you need to change all the information, to be complaint with your project
 
-Inside:
-
-* src\
-  * .env\
-    * terraform.tfvars
-
-Change this informations 
+Inside `src/<module>/env/<environment>/terraform.tfvars` change this informations:
 
 ```ts
-# change this
-# general
 env_short      = "d"
-env            = "dev"
+environment    = "dev"
 prefix         = "dvopla"
-location       = "northeurope"
-location_short = "neu"
 
 tags = {
   CreatedBy   = "Terraform"
   Environment = "DEV"
   Owner       = "DevOps"
-  Source      = "https://github.com/pagopa/devopslab-infra"
+  Source      = "https://github.com/pagopa/aws-terraform-eks-template"
   CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
 ```
 
-And change all the occurency of `devopslab` of his prefix with yours prefix.
+Change the occurrence `dvopla` with the name of your project or the name that is better for you in all folders inside `src/*`.
 
-In the folders core, pillar and k8s
+### Init Terraform backend
 
-Change the occurrence `devopslab` with the name of your project or the name that is better for you.
+Apply the `src/init` module to init all resources needed by Terraform backend:
 
-### Terraform folders name convention
+```sh
+cd src/init
+./terraform.sh init dev
+./terraform.sh apply dev
+```
 
-Inside the folder src we have this folders, that contains the terraform files. Here you can find the meaning of the folders
+Edit all `src/<module>/env/<environment>/backend.tfvars` accordingly and migrate current state:
 
-* core: contains all the basic infrastructure that must be created before to support other layers, and cannot be destroyed every time.
-  * for example we can find the dns, vnet or monitoring
-* eks-platform: here you can find the setup of your cluster k8s/eks
-  * for example ingress, rbac, cluster configuration or service accounts
-* domains: here you can find one or more the business applications
+```sh
+cd src/init
+./terraform.sh init dev -migrate-state
+```
 
 ## Requirements
 

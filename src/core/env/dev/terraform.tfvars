@@ -1,11 +1,13 @@
 env_short   = "d"
 environment = "dev"
-app_name    = "template"
+app_name    = "dvopla"
+
+create_data_subnets = true
 
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
-  Owner       = "PagoPa"
+  Owner       = "DevOps"
   Source      = "https://github.com/pagopa/aws-terraform-eks-template"
-  CostCenter  = "TSXXX - AREA"
+  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
 }
