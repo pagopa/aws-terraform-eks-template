@@ -9,5 +9,5 @@ tags = {
   Environment = "Dev"
   Owner       = "DevOps"
   Source      = "https://github.com/pagopa/aws-terraform-eks-template"
-  CostCenter  = "TS310 - PAGAMENTI & SERVIZI"
+  CostCenter  = "TS310 - PAGAMENTI E SERVIZI"
 }

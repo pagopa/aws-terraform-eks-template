@@ -50,7 +50,7 @@ resource "aws_s3_bucket_versioning" "terraform_states" {
 }
 
 # create a DynamoDB table for locking the state file
-resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
+resource "aws_dynamodb_table" "dynamodb_terraform_state_lock" {
   name           = "terraform-lock"
   hash_key       = "LockID"
   read_capacity  = 4
@@ -89,7 +89,6 @@ resource "aws_iam_openid_connect_provider" "github" {
 resource "aws_iam_role" "githubiac" {
   name        = "GitHubActionIACRole"
   description = "Role to assume to create the infrastructure."
-
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"

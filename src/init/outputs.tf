@@ -3,7 +3,7 @@ output "backend_bucket_name" {
 }
 
 output "dynamodb_lock_table" {
-  value = aws_dynamodb_table.dynamodb-terraform-state-lock.name
+  value = aws_dynamodb_table.dynamodb_terraform_state_lock.name
 }
 
 output "iac_role_arn" {
