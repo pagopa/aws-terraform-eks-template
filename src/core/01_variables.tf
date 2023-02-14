@@ -200,3 +200,15 @@ variable "api_stage_name" {
   default     = "services"
   type        = string
 }
+
+variable "api_create_waf_metrics" {
+  description = "If enabled, WAF sends metrics to CloudWatch"
+  default     = false
+  type        = bool
+}
+
+variable "api_sample_waf_requests" {
+  description = "If enabled, WAF requests are sampled"
+  default     = false
+  type        = bool
+}
