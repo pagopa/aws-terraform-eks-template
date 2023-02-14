@@ -1,6 +1,6 @@
 resource "aws_api_gateway_rest_api" "this" {
-  name = local.project
-  body = file(var.api_openapi_spec_path)
+  name        = local.project
+  body        = file(var.api_openapi_spec_path)
 }
 
 resource "aws_api_gateway_deployment" "this" {
@@ -20,9 +20,3 @@ resource "aws_api_gateway_stage" "this" {
   rest_api_id   = aws_api_gateway_rest_api.this.id
   stage_name    = var.api_stage_name
 }
-
-resource "aws_wafv2_web_acl_association" "this" {
-  resource_arn = aws_api_gateway_stage.this.arn
-  web_acl_arn  = aws_wafv2_web_acl.this.arn
-}
-
