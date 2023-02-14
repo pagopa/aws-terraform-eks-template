@@ -30,7 +30,7 @@ module "cloudfront" {
   viewer_certificate = {
     cloudfront_default_certificate = var.cf_certificate_arn == null ? true : null
     acm_certificate_arn            = var.cf_certificate_arn
-    minimum_protocol_version       = "TLSv1.2_2021"
+    minimum_protocol_version       = var.cf_certificate_arn == null ? "TLSv1" : "TLSv1.2_2021"
     ssl_support_method             = var.cf_certificate_arn == null ? null : "sni-only"
   }
 
