@@ -17,3 +17,13 @@ output "public_subnets_ids" {
   description = "Id list of the public subnets"
   value       = module.vpc.public_subnets
 }
+
+output "distribution_domain_name" {
+  description = "CloudFront distribution domain name"
+  value       = module.cloudfront.cloudfront_distribution_domain_name
+}
+
+output "distribution_id" {
+  description = "CloudFront distribution id"
+  value       = module.cloudfront.cloudfront_distribution_id
+}
