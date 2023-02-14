@@ -62,12 +62,6 @@ variable "vpc_internal_subnets_cidr" {
   type        = list(string)
 }
 
-variable "vpc_enable_single_nat_gateway" {
-  description = "Whether to use a single NAT gateway or one NAT gateway per AZZ"
-  default     = false
-  type        = bool
-}
-
 ########################
 # CloudFront and origins
 ########################
@@ -103,9 +97,18 @@ variable "cf_default_root_object" {
 
 variable "cf_geo_restriction" {
   description = "The geographical restriction for the distribution (locations are ISO 3166-1-alpha-2 codes compliant)"
-  default = {
+  default     = {
     type      = "none"
     locations = []
+  }
+  type = object({
+    type      = string
+    locations = list(string)
+  })
+
+  validation {
+    condition     = contains(["none", "whitelist", "blacklist"], var.cf_geo_restriction.type)
+    error_message = "Allowed values for cf_geo_restriction.type are \"none\", \"whitelist\", \"blacklist\"."
   }
   type = object({
     type      = string
@@ -160,6 +163,24 @@ variable "api_create_waf_metrics" {
 
 variable "api_sample_waf_requests" {
   description = "If enabled, WAF requests are sampled"
+  default     = false
+  type        = bool
+}
+
+variable "cf_create_log_bucket" {
+  description = "If enabled, the bucket to store CloudFront logs will created"
+  default     = false
+  type        = bool
+}
+
+variable "cf_log_bucket_domain_name" {
+  description = "Use an existing bucket to store CloudFront logs"
+  default     = null
+  type        = string
+}
+
+variable "cf_create_monitoring_subscription" {
+  description = "If enabled, the resource for monitoring subscription will created"
   default     = false
   type        = bool
 }
