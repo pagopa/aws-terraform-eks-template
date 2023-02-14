@@ -129,3 +129,19 @@ variable "cf_create_monitoring_subscription" {
   default     = false
   type        = bool
 }
+
+#############
+# API Gateway
+#############
+
+variable "api_openapi_spec_path" {
+  description = "Path of the OpenAPI spec to import in the API Gateway"
+  default     = "assets/openapi_specs/default.yaml"
+  type        = string
+}
+
+variable "api_stage_name" {
+  description = "Name of the stage, it will be used as basepath"
+  default     = "services"
+  type        = string
+}
