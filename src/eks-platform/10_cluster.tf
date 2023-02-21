@@ -37,7 +37,6 @@ module "eks" {
   subnet_ids               = var.vpc.private_subnets_ids
   control_plane_subnet_ids = var.vpc.intra_subnets_ids
 
-  # Fargate profiles use the cluster primary security group so these are not utilized
   create_cluster_security_group = false
   create_node_security_group    = false
 
@@ -66,12 +65,27 @@ module "eks" {
         }
       }
     },
-    { for i in range(3) :
-      "kube-system-${element(split("-", var.azs[i]), 2)}" => {
+    {
+      ingress = {
+        name = var.ingress.namespace
         selectors = [
-          { namespace = "kube-system" }
+          {
+            namespace = var.ingress.namespace
+          }
         ]
 
+        # Using specific subnets instead of the subnets supplied for the cluster itself
+        # subnet_ids = [var.vpc.private_subnets_ids[1]]
+
+        timeouts = {
+          create = "20m"
+          delete = "20m"
+        }
+      }
+    },
+    { for i in range(3) :
+      "kube-system-${element(split("-", var.azs[i]), 2)}" => {
+        selectors  = [{ namespace = "kube-system" }]
         subnet_ids = [element(var.vpc.private_subnets_ids, i)]
       }
     }

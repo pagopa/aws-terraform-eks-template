@@ -8,6 +8,11 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.53.0"
     }
+
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.17.0"
+    }
   }
 }
 
@@ -15,6 +20,18 @@ provider "aws" {
   region = var.aws_region
   default_tags {
     tags = var.tags
+  }
+}
+
+provider "kubernetes" {
+  config_path    = "~/.kube/config"
+  config_context = "arn:aws:eks:eu-south-1:794703684555:cluster/dvopla-d"
+}
+
+provider "helm" {
+  kubernetes {
+    config_path    = "~/.kube/config"
+    config_context = "arn:aws:eks:eu-south-1:794703684555:cluster/dvopla-d"
   }
 }
 

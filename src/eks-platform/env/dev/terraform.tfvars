@@ -22,6 +22,13 @@ vpc = {
 }
 
 enable_public_endpoint = true
+create_echo_server     = true
+
+ingress = {
+  helm_version  = "1.4.7"
+  replica_count = 1
+  namespace     = "ingress"
+}
 
 tags = {
   CreatedBy   = "Terraform"

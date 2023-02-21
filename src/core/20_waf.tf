@@ -1,6 +1,6 @@
 resource "aws_wafv2_web_acl" "this" {
-  name     = local.project
-  scope    = "REGIONAL"
+  name  = local.project
+  scope = "REGIONAL"
 
   default_action {
     allow {} # allow or block

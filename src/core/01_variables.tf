@@ -97,7 +97,7 @@ variable "cf_default_root_object" {
 
 variable "cf_geo_restriction" {
   description = "The geographical restriction for the distribution (locations are ISO 3166-1-alpha-2 codes compliant)"
-  default     = {
+  default = {
     type      = "none"
     locations = []
   }
