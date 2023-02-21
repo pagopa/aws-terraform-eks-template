@@ -56,6 +56,24 @@ module "eks" {
         }
       }
     },
+    {
+      ingress = {
+        name = var.ingress.namespace
+        selectors = [
+          {
+            namespace = var.ingress.namespace
+          }
+        ]
+
+        # Using specific subnets instead of the subnets supplied for the cluster itself
+        # subnet_ids = [var.vpc.private_subnets_ids[1]]
+
+        timeouts = {
+          create = "20m"
+          delete = "20m"
+        }
+      }
+    },
     { for i in range(3) :
       "kube-system-${element(split("-", var.azs[i]), 2)}" => {
         selectors  = [{ namespace = "kube-system" }]

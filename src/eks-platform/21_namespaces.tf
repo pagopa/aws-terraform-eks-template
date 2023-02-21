@@ -1,11 +1,11 @@
-resource "kubernetes_namespace" "this" {
-  for_each = toset(var.namespaces)
-
+resource "kubernetes_namespace" "default" {
   metadata {
-    name = each.value
+    name = var.app_name
   }
+}
 
-  depends_on = [
-    module.eks
-  ]
+resource "kubernetes_namespace" "ingress" {
+  metadata {
+    name = var.ingress.namespace
+  }
 }
