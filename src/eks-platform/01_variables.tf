@@ -57,7 +57,7 @@ variable "cluster_version" {
 
 variable "ingress" {
   description = "AWS Load Balancer controller configuration"
-  type        = object({
+  type = object({
     helm_version  = string
     replica_count = number
     namespace     = string

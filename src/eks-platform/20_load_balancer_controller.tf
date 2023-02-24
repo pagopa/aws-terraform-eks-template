@@ -1,15 +1,14 @@
 module "load_balancer_irsa_role" {
-  source    = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
-  role_name_prefix                       = "${local.project}-ingress-"
+  role_name = "${local.project}-load-balancer-controller"
+
   attach_load_balancer_controller_policy = true
 
   oidc_providers = {
     main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = [
-        "${var.ingress.namespace}:aws-load-balancer-controller"
-      ]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
     }
   }
 }
@@ -19,7 +18,7 @@ module "aws_load_balancer_controller" {
   version = "2.8.0"
 
   repository = "https://aws.github.io/eks-charts"
-  namespace  = kubernetes_namespace.ingress.metadata.0.name
+  namespace  = "kube-system"
   app = {
     name          = "aws-load-balancer-controller"
     chart         = "aws-load-balancer-controller"
@@ -39,6 +38,10 @@ module "aws_load_balancer_controller" {
       value = var.ingress.replica_count
     },
     {
+      name  = "serviceAccount.create"
+      value = "true"
+    },
+    {
       name  = "serviceAccount.name"
       value = "aws-load-balancer-controller"
     },
@@ -56,10 +59,3 @@ module "aws_load_balancer_controller" {
     }
   ]
 }
-
-# resource "aws_api_gateway_vpc_link" "this" {
-#   name        = local.project
-#   description = "${local.project} link to cluster NLB"
-#   target_arns = [module.nlb.lb_arn]
-# }
-
