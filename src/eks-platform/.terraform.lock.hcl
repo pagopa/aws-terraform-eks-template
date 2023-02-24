@@ -3,7 +3,7 @@
 
 provider "registry.terraform.io/hashicorp/aws" {
   version     = "4.53.0"
-  constraints = ">= 3.72.0, >= 4.47.0, ~> 4.53.0"
+  constraints = ">= 3.72.0, >= 4.0.0, >= 4.27.0, >= 4.47.0, ~> 4.53.0"
   hashes = [
     "h1:CymaUpULY6LR/rHl+4+Vs0i2jVHXMhSZuJj8VXqGIPs=",
     "h1:P6ZZ716SRIimw0t/SAgYbOMZtO0HDvwVQKxyHEW6aaE=",
@@ -53,7 +53,10 @@ provider "registry.terraform.io/hashicorp/helm" {
   version     = "2.9.0"
   constraints = ">= 2.0.0"
   hashes = [
+    "h1:3M1gPJ2W3qtYr6do1HkH5l03kSEHIYMQ97W2tP59dYY=",
+    "h1:BDS8a4fxCNuzopFWnPrnhk96wE7vd4vtF4I1F2eWgcM=",
     "h1:D5BLFN82WndhQZQleXE5rO0hUDnlyqb60XeUJKDhuo4=",
+    "h1:fEDID5J/9ret/sLpOSNAu98F/ZBEZhOmL0Leut7m5JU=",
     "zh:1471cb45908b426104687c962007b2980cfde294fa3530fabc4798ce9fb6c20c",
     "zh:1572e9cec20591ec08ece797b3630802be816a5adde36ca91a93359f2430b130",
     "zh:1b10ae03cf5ab1ae21ffaac2251de99797294ae4242b156b3b0beebbdbcb7e0f",
@@ -71,7 +74,7 @@ provider "registry.terraform.io/hashicorp/helm" {
 
 provider "registry.terraform.io/hashicorp/kubernetes" {
   version     = "2.17.0"
-  constraints = ">= 2.10.0"
+  constraints = ">= 2.10.0, ~> 2.17.0"
   hashes = [
     "h1:Dq/EHg8mKP9wDDTJx5CzZ+w44wutIZJGfQLrAIznAqY=",
     "h1:I1L2R+OPgGSh+P6uBSycvvoyRIey/FqMwSvlJ9ccw0o=",

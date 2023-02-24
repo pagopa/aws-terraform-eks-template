@@ -52,7 +52,6 @@ resource "kubernetes_service" "echoserver" {
       port        = 80
       target_port = 8080
     }
-    type = "NodePort"
   }
 }
 
@@ -62,6 +61,10 @@ resource "kubernetes_ingress_v1" "echoserver" {
   metadata {
     name      = var.app_name
     namespace = kubernetes_namespace.default.metadata.0.name
+    annotations = {
+      "alb.ingress.kubernetes.io/target-type" = "ip"
+      "alb.ingress.kubernetes.io/tags" = join(",", [for k, v in var.tags : "${k}=${v}"])
+    }
   }
 
   spec {
