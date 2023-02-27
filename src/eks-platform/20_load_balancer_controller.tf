@@ -3,7 +3,7 @@ module "load_balancer_irsa_role" {
 
   role_name = "${local.project}-load-balancer-controller"
 
-  attach_load_balancer_controller_policy = true
+  attach_load_balancer_controller_targetgroup_binding_only_policy = true
 
   oidc_providers = {
     main = {
