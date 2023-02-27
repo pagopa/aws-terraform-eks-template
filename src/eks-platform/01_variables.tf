@@ -55,17 +55,18 @@ variable "cluster_version" {
   type        = string
 }
 
-variable "ingress" {
-  description = "AWS Load Balancer controller configuration"
-  type = object({
-    helm_version  = string
-    replica_count = number
-    namespace     = string
-  })
+variable "namespaces" {
+  description = "For each namespace this module will create a Fargate profile and a K8s namespace"
+  default     = []
+  type        = list(string)
 }
 
-variable "create_echo_server" {
-  description = "Deploy the echo server microservice, DEBUG mode"
-  default     = false
-  type        = bool
+variable "aws_load_balancer_controller" {
+  description = "AWS Load Balancer controller configuration"
+  type = object({
+    helm_version         = string
+    replica_count        = number
+    namespace            = string
+    service_account_name = string
+  })
 }

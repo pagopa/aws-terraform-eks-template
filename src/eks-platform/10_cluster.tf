@@ -47,18 +47,9 @@ module "eks" {
   }
 
   fargate_profiles = merge(
-    {
-      default = {
-        name = var.app_name
-        selectors = [
-          {
-            namespace = var.app_name
-          }
-        ]
-
-        # Using specific subnets instead of the subnets supplied for the cluster itself
-        # subnet_ids = [var.vpc.private_subnets_ids[1]]
-
+    { for ns in var.namespaces :
+      ns => {
+        selectors  = [{ namespace = ns }]
         timeouts = {
           create = "20m"
           delete = "20m"

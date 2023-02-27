@@ -7,8 +7,10 @@ module "load_balancer_irsa_role" {
 
   oidc_providers = {
     main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["kube-system:aws-load-balancer-controller"]
+      provider_arn = module.eks.oidc_provider_arn
+      namespace_service_accounts = [
+        "${var.aws_load_balancer_controller.namespace}:${var.aws_load_balancer_controller.service_account_name}"
+      ]
     }
   }
 }
@@ -22,7 +24,7 @@ module "aws_load_balancer_controller" {
   app = {
     name          = "aws-load-balancer-controller"
     chart         = "aws-load-balancer-controller"
-    version       = var.ingress.helm_version
+    version       = var.aws_load_balancer_controller.helm_version
     wait          = false
     recreate_pods = true
     deploy        = 1
@@ -35,7 +37,7 @@ module "aws_load_balancer_controller" {
     },
     {
       name  = "replicaCount"
-      value = var.ingress.replica_count
+      value = var.aws_load_balancer_controller.replica_count
     },
     {
       name  = "serviceAccount.create"
@@ -43,7 +45,7 @@ module "aws_load_balancer_controller" {
     },
     {
       name  = "serviceAccount.name"
-      value = "aws-load-balancer-controller"
+      value = var.aws_load_balancer_controller.service_account_name
     },
     {
       name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
