@@ -22,12 +22,14 @@ vpc = {
 }
 
 enable_public_endpoint = true
-create_echo_server     = true
 
-ingress = {
-  helm_version  = "1.4.7"
-  replica_count = 1
-  namespace     = "ingress"
+namespaces = ["echoserver"]
+
+aws_load_balancer_controller = {
+  helm_version         = "1.4.7"
+  replica_count        = 1
+  namespace            = "kube-system"
+  service_account_name = "aws-load-balancer-controller"
 }
 
 namespaces = ["echoserver"]

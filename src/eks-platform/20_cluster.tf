@@ -49,7 +49,7 @@ module "eks" {
   fargate_profiles = merge(
     { for ns in var.namespaces :
       ns => {
-        selectors = [{ namespace = ns }]
+        selectors  = [{ namespace = ns }]
         timeouts = {
           create = "20m"
           delete = "20m"

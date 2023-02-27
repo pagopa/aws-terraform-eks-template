@@ -1,5 +1,7 @@
-resource "kubernetes_namespace" "default" {
+resource "kubernetes_namespace" "this" {
+  for_each = toset(var.namespaces)
+
   metadata {
-    name = var.app_name
+    name = each.value
   }
 }
