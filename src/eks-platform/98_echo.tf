@@ -63,7 +63,7 @@ resource "kubernetes_ingress_v1" "echoserver" {
     namespace = kubernetes_namespace.default.metadata.0.name
     annotations = {
       "alb.ingress.kubernetes.io/target-type" = "ip"
-      "alb.ingress.kubernetes.io/tags" = join(",", [for k, v in var.tags : "${k}=${v}"])
+      "alb.ingress.kubernetes.io/tags"        = join(",", [for k, v in var.tags : "${k}=${v}"])
     }
   }
 
@@ -85,6 +85,28 @@ resource "kubernetes_ingress_v1" "echoserver" {
           path = "/echo/*"
         }
       }
+    }
+  }
+}
+
+resource "aws_security_group" "echoserver" {
+  name        = local.project
+  description = "Connect to ${local.project} cluster NLB"
+  vpc_id      = var.vpc.id
+}
+
+resource "kubernetes_manifest" "echoserver" {
+  manifest = {
+    apiVersion = "apigatewayv2.services.k8s.aws/v1alpha1"
+    kind       = "VPCLink"
+    metadata = {
+      name      = local.project
+      namespace = "kube-system"
+    }
+    spec = {
+      name = local.project
+      securityGroupIDs = [aws_security_group.echoserver.id]
+      subnetIDs = [var.vpc.private_subnets_ids.2]
     }
   }
 }
