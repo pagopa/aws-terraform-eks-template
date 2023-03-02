@@ -34,7 +34,22 @@ variable "azs" {
   type        = list(string)
 }
 
+variable "cluster_vpc_id" {
+  description = "Kubernetes VPC"
+  type        = string
+}
+
+variable "cluster_nlb_arn" {
+  description = "Kubernetes network load balancer arn"
+  type        = string
+}
+
 variable "namespace" {
   description = "Kubernetes namespace to release these services into"
+  type        = string
+}
+
+variable "port" {
+  description = "Microservice default port"
   type        = string
 }

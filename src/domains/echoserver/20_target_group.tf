@@ -11,7 +11,6 @@ resource "aws_lb_target_group" "this" {
     healthy_threshold   = 2
     interval            = 5
     unhealthy_threshold = 2
-    timeout             = 4
   }
 
   lifecycle {
@@ -33,7 +32,7 @@ resource "aws_lb_listener" "this" {
 resource "kubernetes_manifest" "target_group_binding" {
   manifest = {
     apiVersion = "elbv2.k8s.aws/v1beta1"
-    kind       = "TargetGroupBinding"
+    kind = "TargetGroupBinding"
 
     metadata = {
       name      = var.app_name
