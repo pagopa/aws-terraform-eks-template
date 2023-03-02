@@ -51,34 +51,34 @@ resource "kubernetes_service" "echoserver" {
   }
 }
 
-resource "kubernetes_ingress_v1" "echoserver" {
-  metadata {
-    name      = var.app_name
-    namespace = var.namespace
-    annotations = {
-      "alb.ingress.kubernetes.io/target-type" = "ip"
-      "alb.ingress.kubernetes.io/tags"        = join(",", [for k, v in var.tags : "${k}=${v}"])
-    }
-  }
-
-  spec {
-    ingress_class_name = "alb"
-
-    rule {
-      http {
-        path {
-          backend {
-            service {
-              name = var.app_name
-              port {
-                number = 80
-              }
-            }
-          }
-
-          path = "/echo/*"
-        }
-      }
-    }
-  }
-}
+# resource "kubernetes_ingress_v1" "echoserver" {
+#   metadata {
+#     name      = var.app_name
+#     namespace = var.namespace
+#     annotations = {
+#       "alb.ingress.kubernetes.io/target-type" = "ip"
+#       "alb.ingress.kubernetes.io/tags"        = join(",", [for k, v in var.tags : "${k}=${v}"])
+#     }
+#   }
+#
+#   spec {
+#     ingress_class_name = "alb"
+#
+#     rule {
+#       http {
+#         path {
+#           backend {
+#             service {
+#               name = var.app_name
+#               port {
+#                 number = 80
+#               }
+#             }
+#           }
+#
+#           path = "/echo/*"
+#         }
+#       }
+#     }
+#   }
+# }
