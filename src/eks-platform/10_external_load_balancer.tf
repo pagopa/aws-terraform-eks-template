@@ -3,23 +3,22 @@ module "nlb" {
   version = ">= 8.3.1"
 
   name               = local.project
+  internal           = true
   load_balancer_type = "network"
   vpc_id             = var.vpc.id
   subnets            = var.vpc.private_subnets_ids
 }
 
-resource "aws_security_group" "allow_from_nlb" {
-  name_prefix = "${local.project}-allow-from-nlb-"
-  description = "Allow inbound traffic from K8s NLB"
-  vpc_id      = var.vpc.id
-}
+data "aws_network_interface" "nlb_eni" {
+  for_each = toset(var.vpc.private_subnets_ids)
 
-resource "aws_security_group_rule" "allow_from_nlb" {
-  security_group_id = aws_security_group.allow_from_nlb.id
+  filter {
+    name   = "description"
+    values = ["ELB ${module.nlb.lb_arn_suffix}"]
+  }
 
-  type                     = "ingress"
-  from_port                = 0
-  to_port                  = 65535
-  protocol                 = "all"
-  source_security_group_id = module.nlb.security_group_id
+  filter {
+    name   = "subnet-id"
+    values = [each.value]
+  }
 }

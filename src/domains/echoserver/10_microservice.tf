@@ -5,7 +5,7 @@ resource "kubernetes_deployment" "echoserver" {
   }
 
   spec {
-    replicas = 1
+    replicas = 2
 
     selector {
       match_labels = {
