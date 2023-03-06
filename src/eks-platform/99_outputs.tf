@@ -12,3 +12,8 @@ output "cluster_nlb_arn" {
   description = "ARN of the NLB in front of the cluser"
   value       = module.nlb.lb_arn
 }
+
+output "allow_ingress_sg_ig" {
+  description = "Security Group ID to allow incoming connection from cluster NLB"
+  value       = aws_security_group.allow_from_nlb.id
+}

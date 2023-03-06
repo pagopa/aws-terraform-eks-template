@@ -40,6 +40,10 @@ module "eks" {
   create_cluster_security_group = false
   create_node_security_group    = false
 
+  cluster_additional_security_group_ids = [
+    aws_security_group.allow_from_nlb.id
+  ]
+
   fargate_profile_defaults = {
     iam_role_additional_policies = {
       additional = aws_iam_policy.additional.arn
@@ -49,7 +53,7 @@ module "eks" {
   fargate_profiles = merge(
     { for ns in var.namespaces :
       ns => {
-        selectors  = [{ namespace = ns }]
+        selectors = [{ namespace = ns }]
         timeouts = {
           create = "20m"
           delete = "20m"
