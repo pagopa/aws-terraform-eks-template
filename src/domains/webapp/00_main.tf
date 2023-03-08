@@ -21,3 +21,7 @@ provider "aws" {
 locals {
   project = format("%s-%s", var.app_name, var.env_short)
 }
+
+data "aws_canonical_user_id" "current" {}
+data "aws_cloudfront_log_delivery_canonical_user_id" "cloudfront" {}
+

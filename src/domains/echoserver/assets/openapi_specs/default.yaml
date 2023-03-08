@@ -1,0 +1,28 @@
+openapi: "3.0.1"
+info:
+  description: "${description}"
+  version: "1.0"
+paths:
+  /{proxy+}:
+    x-amazon-apigateway-any-method:
+      parameters:
+      - name: "proxy"
+        in: "path"
+        required: true
+        type: "string"
+      responses: {}
+      x-amazon-apigateway-integration:
+        connectionId: "brpyl9"
+        httpMethod: "ANY"
+        uri: "http://dvopla-d-c4fbf5eeb84045ae.elb.eu-south-1.amazonaws.com:${microservice_port}/{proxy}"
+        responses:
+          default:
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.proxy: "method.request.path.proxy"
+        passthroughBehavior: "when_no_match"
+        connectionType: "VPC_LINK"
+        cacheNamespace: "ne38fx"
+        cacheKeyParameters:
+        - "method.request.path.proxy"
+        type: "http_proxy"
