@@ -37,20 +37,8 @@ module "eks" {
   subnet_ids               = var.vpc.private_subnets_ids
   control_plane_subnet_ids = var.vpc.intra_subnets_ids
 
-  # create_cluster_security_group = false
+  create_cluster_security_group = false
   create_node_security_group    = false
-
-  cluster_security_group_additional_rules = merge(
-    { for eni in data.aws_network_interface.nlb_eni :
-      eni.id => {
-        type        = "ingress"
-        from_port   = 1024
-        to_port     = 65535
-        protocol    = "all"
-        cidr_blocks = ["${eni.private_ip}/32"]
-      }
-    }
-  )
 
   fargate_profile_defaults = {
     iam_role_additional_policies = {
