@@ -62,6 +62,12 @@ variable "vpc_internal_subnets_cidr" {
   type        = list(string)
 }
 
+variable "vpc_enable_single_nat_gateway" {
+  description = "Whether to use a single NAT gateway or one NAT gateway per AZZ"
+  default     = false
+  type        = bool
+}
+
 ########################
 # CloudFront and origins
 ########################
