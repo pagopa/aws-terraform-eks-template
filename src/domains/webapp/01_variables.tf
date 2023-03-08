@@ -28,10 +28,6 @@ variable "env_short" {
   type        = string
 }
 
-########################
-# CloudFront and origins
-########################
-
 variable "cf_aliases" {
   description = "Extra CNAMEs for the distribution"
   default     = []
