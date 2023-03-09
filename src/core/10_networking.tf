@@ -14,7 +14,7 @@ module "vpc" {
   single_nat_gateway     = var.vpc_enable_single_nat_gateway
   one_nat_gateway_per_az = !var.vpc_enable_single_nat_gateway
 
-  enable_dns_hostnames     = true
+  enable_dns_hostnames = true
 
   enable_flow_log                      = true
   create_flow_log_cloudwatch_iam_role  = true

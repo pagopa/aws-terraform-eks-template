@@ -33,7 +33,7 @@ resource "aws_lb_listener" "this" {
 resource "kubernetes_manifest" "target_group_binding" {
   manifest = {
     apiVersion = "elbv2.k8s.aws/v1beta1"
-    kind = "TargetGroupBinding"
+    kind       = "TargetGroupBinding"
 
     metadata = {
       name      = var.app_name
