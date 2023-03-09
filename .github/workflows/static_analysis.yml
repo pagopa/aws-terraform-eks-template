@@ -22,6 +22,7 @@ jobs:
         #     src/domains/domain2-common
         env:
           FOLDERS: >
+            src/init
             src/core
             src/eks-platform
             src/domains/echoserver
