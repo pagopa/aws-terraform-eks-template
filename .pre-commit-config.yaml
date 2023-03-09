@@ -5,6 +5,8 @@ repos:
       - id: terraform_fmt
       - id: terraform_docs
       - id: terraform_tfsec
+        args:
+          - --args=--config-file-url https://raw.githubusercontent.com/pagopa/eng-sast-config/main/tfsec/config.yaml
       - id: terraform_validate
         args:
           - --init-args=-lockfile=readonly
