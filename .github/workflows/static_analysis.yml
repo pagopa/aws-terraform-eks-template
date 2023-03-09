@@ -16,17 +16,18 @@ jobs:
           FOLDERS: >
             src/core
             src/eks-platform
-            src/domains/domain1-app
-            src/domains/domain1-common
-            src/domains/domain2-app
-            src/domains/domain2-common
+            src/domains/echoserver
+            # src/domains/domain1-app
+            # src/domains/domain1-common
+            # src/domains/domain2-app
+            # src/domains/domain2-common
         run: |
           pids=()
 
           TAG=$(cat .terraform-version)
           for f in $FOLDERS; do
             pushd "$(pwd)/${f}"
-              sed -i -e 's/  backend "s3" {}//g' 99_main.tf # use local backend
+              sed -i -e 's/  backend "s3" {}//g' 00_main.tf # use local backend
               docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
               pids+=($!)
             popd
