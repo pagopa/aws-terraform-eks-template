@@ -37,7 +37,6 @@ module "eks" {
   subnet_ids               = var.vpc.private_subnets_ids
   control_plane_subnet_ids = var.vpc.intra_subnets_ids
 
-  # Fargate profiles use the cluster primary security group so these are not utilized
   create_cluster_security_group = false
   create_node_security_group    = false
 
@@ -48,18 +47,9 @@ module "eks" {
   }
 
   fargate_profiles = merge(
-    {
-      default = {
-        name = var.app_name
-        selectors = [
-          {
-            namespace = var.app_name
-          }
-        ]
-
-        # Using specific subnets instead of the subnets supplied for the cluster itself
-        # subnet_ids = [var.vpc.private_subnets_ids[1]]
-
+    { for ns in var.namespaces :
+      ns => {
+        selectors = [{ namespace = ns }]
         timeouts = {
           create = "20m"
           delete = "20m"
@@ -68,12 +58,21 @@ module "eks" {
     },
     { for i in range(3) :
       "kube-system-${element(split("-", var.azs[i]), 2)}" => {
-        selectors = [
-          { namespace = "kube-system" }
-        ]
-
+        selectors  = [{ namespace = "kube-system" }]
         subnet_ids = [element(var.vpc.private_subnets_ids, i)]
       }
     }
   )
+}
+
+resource "aws_security_group_rule" "allow_lb_connections" {
+  for_each = data.aws_network_interface.nlb_eni
+
+  security_group_id = module.eks.cluster_primary_security_group_id
+
+  type        = "ingress"
+  from_port   = 1024
+  to_port     = 65535
+  protocol    = "all"
+  cidr_blocks = ["${each.value.private_ip}/32"]
 }

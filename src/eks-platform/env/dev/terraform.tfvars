@@ -1,20 +1,41 @@
 env_short   = "d"
 environment = "dev"
-app_name    = "template"
+app_name    = "dvopla"
 
 vpc = {
-  id                  = "vpc-0af6c8eebde933d1f"
-  intra_subnets_ids   = ["subnet-009b96cfaa0b34f36", "subnet-013c0d6ca86144f85", "subnet-0bd860e53b392924c"]
-  private_subnets_ids = ["subnet-0f9a054cdd48e522c", "subnet-0ce9e6f1fec6b37c8", "subnet-017d62f6f7a7ee405"]
-  public_subnets_ids  = ["subnet-07085b92d54822442", "subnet-0c1e233657bf5b033", "subnet-033a7add8fbd32090"]
+  id = "vpc-0e66e883cef1bf2fc"
+  intra_subnets_ids = [
+    "subnet-056f4c328617b7b75",
+    "subnet-073300df47548d58a",
+    "subnet-0b395725c694fea5c",
+  ]
+  private_subnets_ids = [
+    "subnet-0a530b8bb0301ab24",
+    "subnet-057a04e23ea870b58",
+    "subnet-04c042d372d21fe1a",
+  ]
+  public_subnets_ids = [
+    "subnet-09dfcc93797826229",
+    "subnet-0d31a81a8c82c4ded",
+    "subnet-03175ce3f5744b3f6",
+  ]
 }
 
 enable_public_endpoint = true
 
+namespaces = ["echoserver"]
+
+aws_load_balancer_controller = {
+  helm_version         = "1.4.7"
+  replica_count        = 1
+  namespace            = "kube-system"
+  service_account_name = "aws-load-balancer-controller"
+}
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
-  Owner       = "PagoPa"
+  Owner       = "DevOps"
   Source      = "https://github.com/pagopa/aws-terraform-eks-template"
-  CostCenter  = "TSXXX - AREA"
+  CostCenter  = "TS310 - PAGAMENTI E SERVIZI"
 }

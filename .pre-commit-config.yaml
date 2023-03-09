@@ -1,18 +1,20 @@
 repos:
   - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.77.0
+    rev: v1.77.1
     hooks:
       - id: terraform_fmt
       - id: terraform_docs
       - id: terraform_tfsec
+        args:
+          - --args=--config-file-url https://raw.githubusercontent.com/pagopa/eng-sast-config/main/tfsec/config.yaml
       - id: terraform_validate
         args:
           - --init-args=-lockfile=readonly
           - --args=-json
           - --args=-no-color
-      - id: terraform_providers_lock
-        args:
-          - --args=-platform=windows_amd64
-          - --args=-platform=darwin_amd64
-          - --args=-platform=darwin_arm64
-          - --args=-platform=linux_amd64
+      # - id: terraform_providers_lock
+      #   args:
+      #     - --args=-platform=windows_amd64
+      #     - --args=-platform=darwin_amd64
+      #     - --args=-platform=darwin_arm64
+      #     - --args=-platform=linux_amd64

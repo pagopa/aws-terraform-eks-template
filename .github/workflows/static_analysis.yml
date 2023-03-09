@@ -12,21 +12,27 @@ jobs:
       - uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
 
       - name: init_terraform_folders
+        # env:
+        #   FOLDERS: >
+        #     src/core
+        #     src/eks-platform
+        #     src/domains/domain1-app
+        #     src/domains/domain1-common
+        #     src/domains/domain2-app
+        #     src/domains/domain2-common
         env:
           FOLDERS: >
+            src/init
             src/core
             src/eks-platform
-            src/domains/domain1-app
-            src/domains/domain1-common
-            src/domains/domain2-app
-            src/domains/domain2-common
+            src/domains/echoserver
         run: |
           pids=()
 
           TAG=$(cat .terraform-version)
           for f in $FOLDERS; do
             pushd "$(pwd)/${f}"
-              sed -i -e 's/  backend "s3" {}//g' 99_main.tf # use local backend
+              sed -i -e 's/  backend "s3" {}//g' 00_main.tf # use local backend
               docker run -v $(pwd):/tmp -w /tmp hashicorp/terraform:$TAG init &
               pids+=($!)
             popd
@@ -48,5 +54,5 @@ jobs:
 
       - name: run_pre_commit_terraform
         run: |
-          TAG="v1.77.0@sha256:64ce1e4b99d85497fe646db0724669039b079b45fa8cd503b4dc23dbdca490ae"
+          TAG="v1.77.1@sha256:8734ffdd73f8648a7ea130b58330ccf7d781a6584ed82dd1de27b19873125816"
           docker run -v $(pwd):/lint -w /lint ghcr.io/antonbabenko/pre-commit-terraform:$TAG run -a
