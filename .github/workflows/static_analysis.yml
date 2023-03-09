@@ -12,15 +12,19 @@ jobs:
       - uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
 
       - name: init_terraform_folders
+        # env:
+        #   FOLDERS: >
+        #     src/core
+        #     src/eks-platform
+        #     src/domains/domain1-app
+        #     src/domains/domain1-common
+        #     src/domains/domain2-app
+        #     src/domains/domain2-common
         env:
           FOLDERS: >
             src/core
             src/eks-platform
             src/domains/echoserver
-            # src/domains/domain1-app
-            # src/domains/domain1-common
-            # src/domains/domain2-app
-            # src/domains/domain2-common
         run: |
           pids=()
 
