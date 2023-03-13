@@ -1,7 +1,13 @@
 openapi: "3.0.1"
 info:
-  description: "${description}"
+  title: "echoserver-d"
+  description: "echoserver microservice APIGW"
   version: "1.0"
+servers:
+- url: "https://667qjtbapk.execute-api.eu-south-1.amazonaws.com/{basePath}"
+  variables:
+    basePath:
+      default: "/services"
 paths:
   /{proxy+}:
     options:
@@ -62,7 +68,7 @@ paths:
         type: "http"
         connectionId: "brpyl9"
         httpMethod: "ANY"
-        uri: "http://dvopla-d-c4fbf5eeb84045ae.elb.eu-south-1.amazonaws.com:${microservice_port}/{proxy}"
+        uri: "http://dvopla-d-c4fbf5eeb84045ae.elb.eu-south-1.amazonaws.com:3000/{proxy}"
         responses:
           default:
             statusCode: "200"

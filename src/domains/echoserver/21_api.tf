@@ -1,9 +1,6 @@
 resource "aws_api_gateway_rest_api" "this" {
   name = local.project
-  body = templatefile(var.api_openapi_spec_path, {
-    description       = "${var.app_name} microservice APIGW"
-    microservice_port = var.port
-  })
+  body = file(var.api_openapi_spec_path)
 }
 
 resource "aws_api_gateway_deployment" "this" {
