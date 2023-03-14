@@ -5,12 +5,12 @@ module "nlb" {
   name               = local.project
   internal           = true
   load_balancer_type = "network"
-  vpc_id             = var.vpc.id
-  subnets            = var.vpc.private_subnets_ids
+  vpc_id             = var.vpc_id
+  subnets            = aws_subnet.this[*].id
 }
 
 data "aws_network_interface" "nlb_eni" {
-  for_each = toset(var.vpc.private_subnets_ids)
+  for_each = tomap({ for k, v in aws_subnet.this[*].id: k => v })
 
   filter {
     name   = "description"

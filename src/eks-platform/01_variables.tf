@@ -34,13 +34,15 @@ variable "azs" {
   type        = list(string)
 }
 
-variable "vpc" {
-  description = "VPC configuration"
-  type = object({
-    id                  = string
-    private_subnets_ids = list(string)
-    intra_subnets_ids   = list(string)
-  })
+variable "vpc_id" {
+  description = "VPC id"
+  type        = string
+}
+
+variable "subnets_cidr" {
+  description = "Cidr of the cluster subnets, should be one subnet per AZ"
+  default     = ["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]
+  type        = list(string)
 }
 
 variable "enable_public_endpoint" {

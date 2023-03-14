@@ -57,7 +57,7 @@ module "aws_load_balancer_controller" {
     },
     {
       name  = "vpcId"
-      value = var.vpc.id
+      value = var.vpc_id
     }
   ]
 }

@@ -33,9 +33,9 @@ module "eks" {
     }
   }
 
-  vpc_id                   = var.vpc.id
-  subnet_ids               = var.vpc.private_subnets_ids
-  control_plane_subnet_ids = var.vpc.intra_subnets_ids
+  vpc_id                   = var.vpc_id
+  subnet_ids               = aws_subnet.this[*].id
+  # control_plane_subnet_ids = var.vpc.intra_subnets_ids
 
   create_cluster_security_group = false
   create_node_security_group    = false
@@ -59,7 +59,7 @@ module "eks" {
     { for i in range(3) :
       "kube-system-${element(split("-", var.azs[i]), 2)}" => {
         selectors  = [{ namespace = "kube-system" }]
-        subnet_ids = [element(var.vpc.private_subnets_ids, i)]
+        subnet_ids = [element(aws_subnet.this, i).id]
       }
     }
   )
