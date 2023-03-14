@@ -6,11 +6,10 @@ module "vpc" {
   cidr = var.vpc_cidr
 
   azs             = var.azs
-  private_subnets = [for k, v in var.azs : cidrsubnet(var.vpc_cidr, 4, k)]
-  public_subnets  = [for k, v in var.azs : cidrsubnet(var.vpc_cidr, 8, k + 48)]
-  intra_subnets   = [for k, v in var.azs : cidrsubnet(var.vpc_cidr, 8, k + 52)]
+  public_subnets  = var.vpc_public_subnets_cidr
+  private_subnets = var.vpc_private_subnets_cidr
 
-  enable_nat_gateway     = true
+  enable_nat_gateway     = length(var.vpc_private_subnets_cidr) > 0
   single_nat_gateway     = var.vpc_enable_single_nat_gateway
   one_nat_gateway_per_az = !var.vpc_enable_single_nat_gateway
 

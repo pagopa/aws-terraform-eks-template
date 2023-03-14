@@ -42,19 +42,13 @@ variable "vpc_cidr" {
 
 variable "vpc_private_subnets_cidr" {
   description = "Private subnets list of cidr."
-  default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+  default     = []
   type        = list(string)
 }
 
 variable "vpc_public_subnets_cidr" {
-  description = "Private subnets list of cidr."
-  default     = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
-  type        = list(string)
-}
-
-variable "vpc_internal_subnets_cidr" {
-  description = "Internal subnets list of cidr. Mainly for private endpoints"
-  default     = ["10.0.201.0/24", "10.0.202.0/24", "10.0.203.0/24"]
+  description = "Public subnets list of cidr."
+  default     = ["10.0.250.0/26", "10.0.250.64/26", "10.0.250.128/26"]
   type        = list(string)
 }
 
