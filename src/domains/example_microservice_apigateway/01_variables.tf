@@ -44,6 +44,16 @@ variable "cluster_nlb_arn" {
   type        = string
 }
 
+variable "cluster_nlb_url" {
+  description = "Kubernetes network load balancer arn"
+  type        = string
+}
+
+variable "vpc_link_id" {
+  description = "VPC link id targeting cluster NLB"
+  type        = string
+}
+
 variable "namespace" {
   description = "Kubernetes namespace to release these services into"
   type        = string

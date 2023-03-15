@@ -38,7 +38,7 @@ resource "kubernetes_pod" "awscli" {
     container {
       image = "amazon/aws-cli"
       name  = var.app_name
-      args  = ["dynamodb", "get-item", "--table-name", "dynamodb-d-entries", "--key", "Type={S=counter}"]
+      args  = ["dynamodb", "get-item", "--table-name", aws_dynamodb_table.entries.name, "--key", "Type={S=counter}"]
 
       env {
         name = "AWS_REGION"

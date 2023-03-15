@@ -1,13 +1,8 @@
 openapi: "3.0.1"
 info:
-  title: "echoserver-d"
-  description: "echoserver microservice APIGW"
+  title: "dvopla-apigateway-d"
+  description: "echoserver microservice"
   version: "1.0"
-servers:
-- url: "https://667qjtbapk.execute-api.eu-south-1.amazonaws.com/{basePath}"
-  variables:
-    basePath:
-      default: "/services"
 paths:
   /{proxy+}:
     options:
@@ -66,9 +61,9 @@ paths:
           content: {}
       x-amazon-apigateway-integration:
         type: "http"
-        connectionId: "brpyl9"
+        connectionId: "${vpc_link_id}"
         httpMethod: "ANY"
-        uri: "http://dvopla-d-c4fbf5eeb84045ae.elb.eu-south-1.amazonaws.com:3000/{proxy}"
+        uri: "http://${load_balancer_dns}:${port}/{proxy}"
         responses:
           default:
             statusCode: "200"

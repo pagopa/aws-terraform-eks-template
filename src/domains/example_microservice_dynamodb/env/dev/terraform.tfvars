@@ -1,8 +1,8 @@
 env_short       = "d"
 environment     = "dev"
-app_name        = "dynamodb"
-namespace       = "echoserver"
-oidc_provider_arn = "arn:aws:iam::794703684555:oidc-provider/oidc.eks.eu-south-1.amazonaws.com/id/15EAE9181C2B6F18E92928A296749D8F"
+app_name        = "dvopla-dynamodb"
+namespace       = "example"
+oidc_provider_arn = "arn:aws:iam::794703684555:oidc-provider/oidc.eks.eu-south-1.amazonaws.com/id/196F5E82730D03D93DC0C77CD5A4E4E0"
 
 tags = {
   CreatedBy   = "Terraform"
