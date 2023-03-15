@@ -9,7 +9,7 @@ module "database_reader" {
 
   oidc_providers = {
     main = {
-      provider_arn = var.oidc_provider_arn
+      provider_arn               = var.oidc_provider_arn
       namespace_service_accounts = ["${var.namespace}:${var.app_name}"]
     }
   }
@@ -32,7 +32,7 @@ resource "kubernetes_pod" "awscli" {
   }
 
   spec {
-    restart_policy = "Never"
+    restart_policy       = "Never"
     service_account_name = kubernetes_service_account.database_reader.metadata[0].name
 
     container {
@@ -41,7 +41,7 @@ resource "kubernetes_pod" "awscli" {
       args  = ["dynamodb", "get-item", "--table-name", aws_dynamodb_table.entries.name, "--key", "Type={S=counter}"]
 
       env {
-        name = "AWS_REGION"
+        name  = "AWS_REGION"
         value = "eu-south-1"
       }
     }

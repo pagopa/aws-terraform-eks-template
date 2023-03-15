@@ -10,7 +10,7 @@ module "nlb" {
 }
 
 data "aws_network_interface" "nlb_eni" {
-  for_each = tomap({ for k, v in aws_subnet.this[*].id: k => v })
+  for_each = tomap({ for k, v in aws_subnet.this[*].id : k => v })
 
   filter {
     name   = "description"

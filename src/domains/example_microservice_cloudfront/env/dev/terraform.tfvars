@@ -1,6 +1,6 @@
-env_short       = "d"
-environment     = "dev"
-app_name        = "dvopla-cloudfront"
+env_short   = "d"
+environment = "dev"
+app_name    = "dvopla-cloudfront"
 
 tags = {
   CreatedBy   = "Terraform"

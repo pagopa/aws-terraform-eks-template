@@ -33,8 +33,8 @@ module "eks" {
     }
   }
 
-  vpc_id                   = var.vpc_id
-  subnet_ids               = aws_subnet.this[*].id
+  vpc_id     = var.vpc_id
+  subnet_ids = aws_subnet.this[*].id
   # control_plane_subnet_ids = var.vpc.intra_subnets_ids
 
   create_cluster_security_group = false

@@ -1,7 +1,7 @@
 resource "aws_api_gateway_rest_api" "this" {
   name = local.project
   body = templatefile(var.api_openapi_spec_path, {
-    vpc_link_id = var.vpc_link_id
+    vpc_link_id       = var.vpc_link_id
     load_balancer_dns = var.cluster_nlb_url
     port              = var.port
   })
