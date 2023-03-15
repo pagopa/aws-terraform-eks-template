@@ -34,25 +34,19 @@ variable "tags" {
   }
 }
 
-variable "vpc_cidr" {
+variable "cidr" {
   description = "VPC cidr."
   default     = "10.0.0.0/16"
   type        = string
 }
 
-variable "vpc_private_subnets_cidr" {
-  description = "Private subnets list of cidr."
-  default     = []
-  type        = list(string)
-}
-
-variable "vpc_public_subnets_cidr" {
+variable "public_subnets_cidr" {
   description = "Public subnets list of cidr."
   default     = ["10.0.250.0/26", "10.0.250.64/26", "10.0.250.128/26"]
   type        = list(string)
 }
 
-variable "vpc_enable_single_nat_gateway" {
+variable "enable_single_nat_gateway" {
   description = "Whether to use a single NAT gateway or one NAT gateway per AZZ"
   default     = false
   type        = bool

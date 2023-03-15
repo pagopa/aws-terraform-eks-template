@@ -3,12 +3,12 @@ output "vpc_id" {
   value       = module.vpc.vpc_id
 }
 
-output "private_subnets_ids" {
-  description = "Id list of the private subnets"
-  value       = module.vpc.private_subnets
-}
-
 output "public_subnets_ids" {
   description = "Id list of the public subnets"
   value       = module.vpc.public_subnets
+}
+
+output "nat_ids" {
+  description = "Id list of the nat gatways subnets"
+  value       = aws_nat_gateway.this[*].id
 }
