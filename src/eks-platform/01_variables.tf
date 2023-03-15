@@ -45,6 +45,11 @@ variable "subnets_cidr" {
   type        = list(string)
 }
 
+variable "nat_gateway_ids" {
+  description = "Ids of NAT gateways to route traffic to"
+  type        = list(string)
+}
+
 variable "enable_public_endpoint" {
   description = "Determines whether the Kubernetes API are public or not"
   default     = false

@@ -3,6 +3,7 @@ environment = "dev"
 app_name    = "dvopla"
 
 vpc_id                 = "vpc-07e680d083d85f636"
+nat_gateway_ids        = ["nat-00513a086ac6d89dd"]
 enable_public_endpoint = true
 namespaces             = ["example"]
 
