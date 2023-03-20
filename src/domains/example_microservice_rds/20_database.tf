@@ -9,10 +9,10 @@ module "aurora_postgresql_v2" {
   engine_mode       = "provisioned"
   storage_encrypted = true
 
-  vpc_id                = var.vpc_id
-  subnets               = aws_subnet.this[*].id
-  allowed_cidr_blocks   = var.allowed_cidr
-  create_security_group = true
+  vpc_id                  = var.vpc_id
+  subnets                 = aws_subnet.this[*].id
+  create_security_group   = true
+  allowed_security_groups = [aws_security_group.allow_db_connection.id]
 
   monitoring_interval = 60
 

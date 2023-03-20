@@ -44,11 +44,6 @@ variable "subnets_cidr" {
   type        = list(string)
 }
 
-variable "allowed_cidr" {
-  description = "Cidr allowed to access the cluster"
-  type        = list(string)
-}
-
 variable "namespace" {
   description = "Kubernetes namespace to release these services into"
   type        = string
@@ -62,4 +57,9 @@ variable "cluster_min_capacity" {
 variable "cluster_max_capacity" {
   description = "Aurora serverless cluster max capacity"
   type        = number
+}
+
+variable "cluster_security_group_id" {
+  description = "Security group of the cluster"
+  type        = string
 }
