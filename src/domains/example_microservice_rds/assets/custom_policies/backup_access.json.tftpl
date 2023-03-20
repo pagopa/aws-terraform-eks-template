@@ -1,0 +1,45 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowBackupCreation",
+      "Effect": "Allow",
+      "Action": [
+        "backup:DescribeBackupVault",
+        "backup:CopyFromBackupVault",
+        "backup:CopyIntoBackupVault",
+        "backup:CreateBackupPlan",
+        "backup:CreateBackupSelection",
+        "backup:CreateBackupVault",
+        "backup:CreateReportPlan",
+        "backup:GetBackupPlan",
+        "backup:GetBackupVaultAccessPolicy"
+      ],
+      "Resource": "arn:aws:backup:*:*:backup-vault:${cluster_vault_name}"
+    },
+    {
+      "Sid": "AllowRDSAccess",
+      "Effect": "Allow",
+      "Action": [
+          "rds:AddTagsToResource",
+          "rds:ListTagsForResource",
+          "rds:DescribeDBSnapshots",
+          "rds:CreateDBSnapshot",
+          "rds:CopyDBSnapshot",
+          "rds:DescribeDBInstances",
+          "rds:CreateDBClusterSnapshot",
+          "rds:DescribeDBClusters",
+          "rds:DescribeDBClusterSnapshots",
+          "rds:CopyDBClusterSnapshot"
+      ],
+      "Resource": [
+        "arn:aws:rds:*:*:cluster:${cluster_id}",
+        %{ for instance_id in cluster_instance_ids }
+        "arn:aws:rds:*:*:db:${instance_id}",
+        %{ endfor ~}
+        "arn:aws:rds:*:*:cluster-snapshot:awsbackup:*"
+      ]
+    }
+  ]
+}
+
