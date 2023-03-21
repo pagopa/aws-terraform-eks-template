@@ -59,7 +59,7 @@ variable "cluster_max_capacity" {
   type        = number
 }
 
-variable "cluster_security_group_id" {
+variable "eks_security_group_id" {
   description = "Security group of the cluster"
   type        = string
 }

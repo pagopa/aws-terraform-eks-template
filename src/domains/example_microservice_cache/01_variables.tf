@@ -102,7 +102,7 @@ variable "apply_immediately" {
   type        = bool
 }
 
-variable "cluster_security_group_id" {
-  description = "Security group of the cluster"
+variable "eks_security_group_id" {
+  description = "Security group of the EKS cluster"
   type        = string
 }

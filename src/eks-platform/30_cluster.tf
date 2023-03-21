@@ -25,7 +25,7 @@ module "eks" {
 
   cluster_addons = {
     kube-proxy = {}
-    vpc-cni    = {
+    vpc-cni = {
       configuration_values = jsonencode({
         env = {
           ENABLE_POD_ENI = "true"

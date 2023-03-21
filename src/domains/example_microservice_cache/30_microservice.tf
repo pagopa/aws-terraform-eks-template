@@ -43,7 +43,7 @@ resource "kubernetes_manifest" "allow_cache_connection" {
       securityGroups = {
         groupIds = [
           aws_security_group.allow_cache_connection.id,
-          var.cluster_security_group_id,
+          var.eks_security_group_id,
         ]
       }
     }

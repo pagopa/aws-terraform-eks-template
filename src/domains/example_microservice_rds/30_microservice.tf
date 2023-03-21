@@ -23,7 +23,7 @@ resource "kubernetes_pod" "awscli" {
       ]
 
       env {
-        name = "PGPASSWORD"
+        name  = "PGPASSWORD"
         value = module.aurora_postgresql_v2.cluster_master_password
       }
     }
@@ -50,7 +50,7 @@ resource "kubernetes_manifest" "allow_db_connection" {
       securityGroups = {
         groupIds = [
           aws_security_group.allow_db_connection.id,
-          var.cluster_security_group_id,
+          var.eks_security_group_id,
         ]
       }
     }
