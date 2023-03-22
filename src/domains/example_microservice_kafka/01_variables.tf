@@ -49,6 +49,11 @@ variable "namespace" {
   type        = string
 }
 
+variable "kafka_version" {
+  description = "https://docs.aws.amazon.com/msk/latest/developerguide/supported-kafka-versions.html"
+  type        = string
+}
+
 variable "broker_replicas" {
   description = "Number of broker nodes"
   type        = number

@@ -34,7 +34,7 @@ resource "aws_security_group_rule" "kafka_ingress_plain" {
 
 resource "aws_msk_cluster" "this" {
   cluster_name           = local.project
-  kafka_version          = "2.8.1"
+  kafka_version          = var.kafka_version
   number_of_broker_nodes = var.broker_replicas
 
   broker_node_group_info {
@@ -48,4 +48,22 @@ resource "aws_msk_cluster" "this" {
       }
     }
   }
+
+  client_authentication {
+    unauthenticated = true
+
+    sasl {
+        iam   = false
+        scram = false
+      }
+
+    tls {}
+  }
+
+  encryption_info {
+    encryption_in_transit {
+     client_broker = "TLS_PLAINTEXT"
+      }
+  }
+
 }

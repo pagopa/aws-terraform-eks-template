@@ -7,6 +7,7 @@ subnets_cidr          = ["10.0.130.0/26", "10.0.130.64/26", "10.0.130.128/26"]
 eks_security_group_id = "sg-0788bf4a588090ae7"
 
 namespace       = "example"
+kafka_version   = "2.8.1"
 broker_replicas = 3
 broker_type     = "kafka.t3.small"
 broker_storage  = 10

@@ -1,4 +1,4 @@
-resource "kubernetes_pod" "awscli" {
+resource "kubernetes_pod" "psql" {
   metadata {
     name      = var.app_name
     namespace = var.namespace
