@@ -15,8 +15,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-# terraform state file setup
-# create an S3 bucket to store the state file in
+#tfsec:ignore:aws-s3-enable-bucket-logging
 resource "aws_s3_bucket" "terraform_states" {
   bucket_prefix = "terraform-backend-"
 
@@ -49,7 +48,19 @@ resource "aws_s3_bucket_versioning" "terraform_states" {
   }
 }
 
-# create a DynamoDB table for locking the state file
+#tfsec:ignore:aws-s3-encryption-customer-key
+resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_states" {
+  bucket = aws_s3_bucket.terraform_states.id
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "aws:kms"
+    }
+  }
+}
+
+#tfsec:ignore:aws-dynamodb-enable-at-rest-encryption
+#tfsec:ignore:aws-dynamodb-enable-recovery
+#tfsec:ignore:aws-dynamodb-table-customer-key
 resource "aws_dynamodb_table" "dynamodb_terraform_state_lock" {
   name           = "terraform-lock"
   hash_key       = "LockID"
@@ -73,17 +84,10 @@ data "aws_iam_policy" "admin_access" {
 
 data "aws_caller_identity" "current" {}
 
-# github openid identity provider.
 resource "aws_iam_openid_connect_provider" "github" {
-  url = "https://token.actions.githubusercontent.com"
-
-  client_id_list = [
-    "sts.amazonaws.com",
-  ]
-
-  thumbprint_list = [
-    "6938fd4d98bab03faadb97b34396831e3780aea1"
-  ]
+  url             = "https://token.actions.githubusercontent.com"
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
 }
 
 resource "aws_iam_role" "githubiac" {

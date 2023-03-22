@@ -5,6 +5,10 @@ resource "aws_subnet" "this" {
   cidr_block           = var.subnets_cidr[count.index]
   availability_zone    = length(regexall("^[a-z]{2}-", element(var.azs, count.index))) > 0 ? element(var.azs, count.index) : null
   availability_zone_id = length(regexall("^[a-z]{2}-", element(var.azs, count.index))) == 0 ? element(var.azs, count.index) : null
+
+  tags = merge(var.tags, {
+    "kubernetes.io/role/internal-elb" = 1
+  })
 }
 
 resource "aws_route_table" "this" {

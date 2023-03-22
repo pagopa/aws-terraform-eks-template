@@ -51,3 +51,9 @@ variable "enable_single_nat_gateway" {
   default     = false
   type        = bool
 }
+
+variable "map_public_ip_on_launch" {
+  description = "Whether instances in public subnets should be assigned a public ip address"
+  default     = false
+  type        = bool
+}
