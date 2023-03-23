@@ -53,17 +53,17 @@ resource "aws_msk_cluster" "this" {
     unauthenticated = true
 
     sasl {
-        iam   = false
-        scram = false
-      }
+      iam   = false
+      scram = false
+    }
 
     tls {}
   }
 
   encryption_info {
     encryption_in_transit {
-     client_broker = "TLS_PLAINTEXT"
-      }
+      client_broker = "TLS_PLAINTEXT"
+    }
   }
 
 }

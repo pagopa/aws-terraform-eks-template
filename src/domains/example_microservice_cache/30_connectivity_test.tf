@@ -1,25 +1,38 @@
-resource "kubernetes_pod" "redis" {
+resource "kubernetes_job" "redis" {
   metadata {
     name      = var.app_name
     namespace = var.namespace
-
-    labels = {
-      app = var.app_name
-    }
   }
 
   spec {
-    restart_policy = "Never"
+    ttl_seconds_after_finished = 60
 
-    container {
-      image   = "redis"
-      name    = var.app_name
-      command = ["redis-cli"]
-      args = [
-        "-h", aws_elasticache_replication_group.this.primary_endpoint_address,
-        "PING",
-      ]
+    template {
+      metadata {
+        labels = {
+          app = var.app_name
+        }
+      }
+
+      spec {
+        restart_policy = "Never"
+
+        container {
+          image   = "redis"
+          name    = var.app_name
+          command = ["redis-cli"]
+          args = [
+            "-h", aws_elasticache_replication_group.this.primary_endpoint_address,
+            "PING",
+          ]
+        }
+      }
     }
+  }
+
+  timeouts {
+    create = "2m"
+    update = "2m"
   }
 }
 
