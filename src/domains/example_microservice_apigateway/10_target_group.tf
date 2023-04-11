@@ -29,27 +29,3 @@ resource "aws_lb_listener" "this" {
     target_group_arn = aws_lb_target_group.this.arn
   }
 }
-
-resource "kubernetes_manifest" "target_group_binding" {
-  manifest = {
-    apiVersion = "elbv2.k8s.aws/v1beta1"
-    kind       = "TargetGroupBinding"
-
-    metadata = {
-      name      = var.app_name
-      namespace = var.namespace
-    }
-
-    spec = {
-      targetGroupARN = aws_lb_target_group.this.arn
-      serviceRef = {
-        name = var.app_name
-        port = 80
-      }
-    }
-  }
-
-  lifecycle {
-    replace_triggered_by = [aws_lb_target_group.this.arn]
-  }
-}
