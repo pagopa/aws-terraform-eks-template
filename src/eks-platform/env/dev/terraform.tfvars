@@ -14,15 +14,6 @@ aws_load_balancer_controller = {
   service_account_name = "aws-load-balancer-controller"
 }
 
-namespaces = ["echoserver"]
-
-aws_load_balancer_controller = {
-  helm_version         = "1.4.7"
-  replica_count        = 1
-  namespace            = "kube-system"
-  service_account_name = "aws-load-balancer-controller"
-}
-
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
