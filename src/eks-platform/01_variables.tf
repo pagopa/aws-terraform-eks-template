@@ -77,3 +77,11 @@ variable "aws_load_balancer_controller" {
     service_account_name = string
   })
 }
+
+variable "keda" {
+  description = "Keda configuration"
+  type = object({
+    helm_version         = string
+    namespace            = string
+  })
+}

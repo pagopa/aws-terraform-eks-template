@@ -5,13 +5,18 @@ app_name    = "dvopla"
 vpc_id                 = "vpc-07e680d083d85f636"
 nat_gateway_ids        = ["nat-00513a086ac6d89dd"]
 enable_public_endpoint = true
-namespaces             = ["example"]
+namespaces             = ["example", "keda"]
 
 aws_load_balancer_controller = {
   helm_version         = "1.4.7"
   replica_count        = 1
   namespace            = "kube-system"
   service_account_name = "aws-load-balancer-controller"
+}
+
+keda = {
+  helm_version = "2.10.0"
+  namespace    = "keda"
 }
 
 tags = {

@@ -44,6 +44,32 @@ resource "helm_release" "echoserver" {
     value = data.aws_secretsmanager_secret_version.my_secret.secret_string
   }
 
+  set {
+    name = "autoscaling.enable"
+    value = true
+  }
+
+  set {
+    name = "autoscaling.maxReplica"
+    value = 2
+  }
+
+  set {
+    name = "autoscaling.triggers[0].type"
+    value = "cpu"
+  }
+
+  set {
+    name = "autoscaling.triggers[0].metricType"
+    value = "Utilization"
+  }
+
+  set {
+    name = "autoscaling.triggers[0].metadata.value"
+    value = "50"
+    type = "string"
+  }
+
   lifecycle {
     replace_triggered_by = [aws_lb_target_group.this.arn]
   }

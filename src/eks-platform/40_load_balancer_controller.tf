@@ -15,12 +15,14 @@ module "load_balancer_irsa_role" {
   }
 }
 
+# Use plain helm_release resource
 module "aws_load_balancer_controller" {
   source  = "terraform-module/release/helm"
   version = "2.8.0"
 
   repository = "https://aws.github.io/eks-charts"
-  namespace  = "kube-system"
+  namespace  = var.aws_load_balancer_controller.namespace
+
   app = {
     name          = "aws-load-balancer-controller"
     chart         = "aws-load-balancer-controller"
