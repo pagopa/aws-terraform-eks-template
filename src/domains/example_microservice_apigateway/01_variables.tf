@@ -28,9 +28,13 @@ variable "env_short" {
   type        = string
 }
 
-variable "azs" {
-  description = "Availability zones"
-  default     = ["eu-south-1a", "eu-south-1b", "eu-south-1c"]
+variable "cluster_name" {
+  description = "Name of the EKS cluster"
+  type        = string
+}
+
+variable "cluster_subnet_ids" {
+  description = "Subnet ids of the EKS cluster"
   type        = list(string)
 }
 

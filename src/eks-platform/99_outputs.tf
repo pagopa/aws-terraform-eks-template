@@ -8,6 +8,11 @@ output "cluster_name" {
   value       = module.eks.cluster_name
 }
 
+output "cluster_subnet_ids" {
+  description = "Subnet ids of the EKS cluster"
+  value = aws_subnet.this[*].id
+}
+
 output "cluster_nlb_arn" {
   description = "ARN of the NLB in front of the cluser"
   value       = module.nlb.lb_arn

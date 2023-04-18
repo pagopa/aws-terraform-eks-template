@@ -5,7 +5,6 @@ app_name    = "dvopla"
 vpc_id                 = "vpc-07e680d083d85f636"
 nat_gateway_ids        = ["nat-00513a086ac6d89dd"]
 enable_public_endpoint = true
-namespaces             = ["example", "keda"]
 
 aws_load_balancer_controller = {
   helm_version         = "1.4.7"

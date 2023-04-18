@@ -62,12 +62,6 @@ variable "cluster_version" {
   type        = string
 }
 
-variable "namespaces" {
-  description = "For each namespace this module will create a Fargate profile and a K8s namespace"
-  default     = []
-  type        = list(string)
-}
-
 variable "aws_load_balancer_controller" {
   description = "AWS Load Balancer controller configuration"
   type = object({
