@@ -36,7 +36,12 @@ module "eks" {
   create_node_security_group    = false
 
   fargate_profiles = merge(
-    # { "keda" => { selectors  = [{ namespace = "keda" }] } },
+    { for i in range(3) :
+      "${local.project}-${element(split("-", var.azs[i]), 2)}" => {
+        selectors  = [{ namespace = "*" }]
+        subnet_ids = [element(aws_subnet.this, i).id]
+      }
+    },
     { for i in range(3) :
       "kube-system-${element(split("-", var.azs[i]), 2)}" => {
         selectors  = [{ namespace = "kube-system" }]
