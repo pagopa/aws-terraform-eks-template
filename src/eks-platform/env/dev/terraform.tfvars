@@ -18,6 +18,11 @@ keda = {
   namespace    = "keda"
 }
 
+metrics_server = {
+  helm_version = "3.10.0"
+  namespace    = "kube-system"
+}
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"

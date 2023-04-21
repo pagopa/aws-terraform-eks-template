@@ -79,3 +79,11 @@ variable "keda" {
     namespace            = string
   })
 }
+
+variable "metrics_server" {
+  description = "K8s metrics server configuration"
+  type = object({
+    helm_version         = string
+    namespace            = string
+  })
+}
