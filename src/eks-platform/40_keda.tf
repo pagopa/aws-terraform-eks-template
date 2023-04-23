@@ -41,3 +41,30 @@ resource "helm_release" "keda" {
   #   value = "keda-operator"
   # }
 }
+
+resource "kubernetes_manifest" "keda_sg" {
+  manifest = {
+    apiVersion = "vpcresources.k8s.aws/v1beta1"
+    kind       = "SecurityGroupPolicy"
+
+    metadata = {
+      name      = "keda"
+      namespace = var.keda.namespace
+    }
+
+    spec = {
+      podSelector = {
+        matchLabels = {
+          "app.kubernetes.io/instance" = "keda"
+          "app.kubernetes.io/name"     = "keda-operator"
+        }
+      }
+
+      securityGroups = {
+        groupIds = [
+          module.eks.cluster_primary_security_group_id
+        ]
+      }
+    }
+  }
+}

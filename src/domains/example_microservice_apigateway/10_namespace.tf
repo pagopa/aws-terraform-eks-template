@@ -3,7 +3,7 @@ resource "aws_iam_role" "fargate_profile" {
   description = "Fargate profile IAM role"
 
   force_detach_policies = true
-  assume_role_policy    = jsonencode({
+  assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {

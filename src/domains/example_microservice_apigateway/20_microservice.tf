@@ -15,59 +15,65 @@ resource "helm_release" "echoserver" {
   version    = "0.1.0"
 
   set {
-    name = "image.repository"
+    name  = "image.repository"
     value = "k8s.gcr.io/echoserver"
   }
 
   set {
-    name = "image.tag"
+    name  = "image.tag"
     value = "1.10"
   }
 
   set {
-    name = "image.port"
+    name  = "image.port"
     value = 8080
   }
 
   set {
-    name = "targetGroupBinding.create"
+    name  = "targetGroupBinding.create"
     value = true
   }
 
   set {
-    name = "targetGroupBinding.arn"
+    name  = "targetGroupBinding.arn"
     value = aws_lb_target_group.this.arn
   }
 
   set {
-    name = "image.env.MY_SECRET"
+    name  = "image.env.MY_SECRET"
     value = data.aws_secretsmanager_secret_version.my_secret.secret_string
   }
 
   set {
-    name = "autoscaling.enable"
+    name  = "image.env.MY_CONFIG"
+    value = "myconfiguration"
+  }
+
+  set {
+    name  = "autoscaling.enable"
     value = true
   }
 
   set {
-    name = "autoscaling.maxReplica"
+    name  = "autoscaling.maxReplica"
     value = 2
   }
 
   set {
-    name = "autoscaling.triggers[0].type"
+    name  = "autoscaling.triggers[0].type"
     value = "cpu"
+    type  = "string"
   }
 
   set {
-    name = "autoscaling.triggers[0].metricType"
+    name  = "autoscaling.triggers[0].metricType"
     value = "Utilization"
   }
 
   set {
-    name = "autoscaling.triggers[0].metadata.value"
+    name  = "autoscaling.triggers[0].metadata.value"
     value = "50"
-    type = "string"
+    type  = "string"
   }
 
   lifecycle {
