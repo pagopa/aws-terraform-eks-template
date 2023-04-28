@@ -58,7 +58,7 @@ variable "enable_public_endpoint" {
 
 variable "cluster_version" {
   description = "Kubernetes <major>.<minor> version to use for the EKS cluster (i.e.: 1.24)"
-  default     = "1.24"
+  default     = "1.26"
   type        = string
 }
 
