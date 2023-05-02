@@ -1,7 +1,7 @@
 env_short   = "d"
 environment = "dev"
 app_name    = "dvopla-cache"
-namespace   = "example"
+namespace   = "example-cache"
 
 vpc_id                = "vpc-07e680d083d85f636"
 subnets_cidr          = ["10.0.129.0/26", "10.0.129.64/26", "10.0.129.128/26"]

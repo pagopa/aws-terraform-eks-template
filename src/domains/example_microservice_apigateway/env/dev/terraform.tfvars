@@ -7,7 +7,7 @@ cluster_nlb_arn    = "arn:aws:elasticloadbalancing:eu-south-1:794703684555:loadb
 cluster_nlb_url    = "dvopla-d-eea79f09ff7b0c1a.elb.eu-south-1.amazonaws.com"
 cluster_vpc_id     = "vpc-07e680d083d85f636"
 vpc_link_id        = "nt64u8"
-namespace          = "example"
+namespace          = "example-apigateway"
 port               = 3000
 
 tags = {
