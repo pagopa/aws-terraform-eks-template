@@ -3,7 +3,7 @@ resource "aws_api_gateway_rest_api" "this" {
   body = templatefile(var.api_openapi_spec_path, {
     vpc_link_id       = var.vpc_link_id
     load_balancer_dns = var.cluster_nlb_url
-    port              = var.port
+    cors_fqdn         = var.cors_fqdn
   })
 }
 

@@ -1,14 +1,10 @@
-env_short          = "d"
-environment        = "dev"
-app_name           = "dvopla-apigateway"
-cluster_name       = "dvopla-d"
-cluster_subnet_ids = ["subnet-07e9a9e1f8a121a2a", "subnet-029c6bb683161a612", "subnet-01f308ca17bc5a827"]
-cluster_nlb_arn    = "arn:aws:elasticloadbalancing:eu-south-1:794703684555:loadbalancer/net/dvopla-d/eea79f09ff7b0c1a"
-cluster_nlb_url    = "dvopla-d-eea79f09ff7b0c1a.elb.eu-south-1.amazonaws.com"
-cluster_vpc_id     = "vpc-07e680d083d85f636"
-vpc_link_id        = "nt64u8"
-namespace          = "example-apigateway"
-port               = 3000
+env_short       = "d"
+environment     = "dev"
+app_name        = "dvopla-apigateway"
+cluster_nlb_url = "dvopla-d-nlb-0dceb02c57146cd0.elb.eu-south-1.amazonaws.com"
+vpc_link_id     = "anuipc"
+namespace       = "example-apigateway"
+cors_fqdn       = "https://d3av01txhd75u9.cloudfront.net"
 
 tags = {
   CreatedBy   = "Terraform"

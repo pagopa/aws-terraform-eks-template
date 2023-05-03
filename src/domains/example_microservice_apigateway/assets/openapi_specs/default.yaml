@@ -34,7 +34,7 @@ paths:
             responseParameters:
               method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-              method.response.header.Access-Control-Allow-Origin: "'https://d3tfwmndqvau80.cloudfront.net'"
+              method.response.header.Access-Control-Allow-Origin: "'${cors_fqdn}'"
         requestTemplates:
           application/json: "{\"statusCode\": 200}"
         passthroughBehavior: "when_no_match"
@@ -63,14 +63,14 @@ paths:
         type: "http"
         connectionId: "${vpc_link_id}"
         httpMethod: "ANY"
-        uri: "http://${load_balancer_dns}:${port}/{proxy}"
+        uri: "http://${load_balancer_dns}/{proxy}"
         responses:
           default:
             statusCode: "200"
             responseParameters:
               method.response.header.Access-Control-Allow-Methods: "'DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'"
               method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
-              method.response.header.Access-Control-Allow-Origin: "'https://d3tfwmndqvau80.cloudfront.net'"
+              method.response.header.Access-Control-Allow-Origin: "'${cors_fqdn}'"
         requestParameters:
           integration.request.path.proxy: "method.request.path.proxy"
         passthroughBehavior: "when_no_templates"

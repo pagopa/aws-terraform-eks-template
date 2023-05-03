@@ -1,0 +1,22 @@
+image:
+  repository: k8s.gcr.io/echoserver
+  tag: 1.10
+  port: 8080
+
+env:
+  MY_CONFIG: myconfig
+
+autoscaling:
+  enable: true
+  maxReplica: 2
+  triggers:
+    - type: cpu
+      metricType: Utilization
+      metadata:
+        value: "50"
+
+ingress:
+  create: true
+  load_balancer_name: dvopla-d-alb
+  path: "/"
+  pathType: Prefix

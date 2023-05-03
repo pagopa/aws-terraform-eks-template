@@ -52,14 +52,12 @@ module "eks" {
 }
 
 resource "aws_security_group_rule" "allow_lb_connections" {
-  for_each = data.aws_network_interface.nlb_eni
-
   security_group_id = module.eks.cluster_primary_security_group_id
-  description       = "Allow access from NLB"
+  description       = "Allow access from ALB"
 
-  type        = "ingress"
-  from_port   = 1024
-  to_port     = 65535
-  protocol    = "all"
-  cidr_blocks = ["${each.value.private_ip}/32"]
+  type                     = "ingress"
+  from_port                = 1024
+  to_port                  = 65535
+  protocol                 = "all"
+  source_security_group_id = module.alb.security_group_id
 }

@@ -28,26 +28,6 @@ variable "env_short" {
   type        = string
 }
 
-variable "cluster_name" {
-  description = "Name of the EKS cluster"
-  type        = string
-}
-
-variable "cluster_subnet_ids" {
-  description = "Subnet ids of the EKS cluster"
-  type        = list(string)
-}
-
-variable "cluster_vpc_id" {
-  description = "Kubernetes VPC"
-  type        = string
-}
-
-variable "cluster_nlb_arn" {
-  description = "Kubernetes network load balancer arn"
-  type        = string
-}
-
 variable "cluster_nlb_url" {
   description = "Kubernetes network load balancer arn"
   type        = string
@@ -63,8 +43,8 @@ variable "namespace" {
   type        = string
 }
 
-variable "port" {
-  description = "Microservice default port"
+variable "cors_fqdn" {
+  description = "FQDN to allow CORS"
   type        = string
 }
 

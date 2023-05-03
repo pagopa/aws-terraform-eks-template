@@ -16,8 +16,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "push": "aws s3 sync build/ s3://dvopla-cloudfront-d-hosting-20230315080848904400000001",
-    "invalidate": "aws cloudfront create-invalidation --distribution-id E2Y0TC85UEOTR1 --paths '/*'"
+    "push": "aws s3 sync build/ s3://dvopla-cloudfront-d-hosting-20230503121212334900000001",
+    "invalidate": "aws cloudfront create-invalidation --distribution-id E1NOOP6I2DDC0E --paths '/*'"
   },
   "eslintConfig": {
     "extends": [

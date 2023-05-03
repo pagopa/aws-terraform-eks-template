@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-const url = "https://w5r1d6pi3j.execute-api.eu-south-1.amazonaws.com/services/echo"
+const url = "https://j6x0izzd7f.execute-api.eu-south-1.amazonaws.com/services/echo"
 
 function App() {
   const [res, setRes] = useState(null);
