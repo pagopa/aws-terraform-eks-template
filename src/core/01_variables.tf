@@ -47,7 +47,7 @@ variable "public_subnets_cidr" {
 }
 
 variable "enable_single_nat_gateway" {
-  description = "Whether to use a single NAT gateway or one NAT gateway per AZZ"
+  description = "Whether to use a single NAT gateway or one NAT gateway per AZ"
   default     = false
   type        = bool
 }
