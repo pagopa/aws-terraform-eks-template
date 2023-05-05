@@ -34,13 +34,20 @@ variable "azs" {
   type        = list(string)
 }
 
-variable "vpc" {
-  description = "VPC configuration"
-  type = object({
-    id                  = string
-    private_subnets_ids = list(string)
-    intra_subnets_ids   = list(string)
-  })
+variable "vpc_id" {
+  description = "VPC id"
+  type        = string
+}
+
+variable "subnets_cidr" {
+  description = "Cidr of the cluster subnets, should be one subnet per AZ"
+  default     = ["10.0.0.0/19", "10.0.32.0/19", "10.0.64.0/19"]
+  type        = list(string)
+}
+
+variable "nat_gateway_ids" {
+  description = "Ids of NAT gateways to route traffic to"
+  type        = list(string)
 }
 
 variable "enable_public_endpoint" {
@@ -51,14 +58,8 @@ variable "enable_public_endpoint" {
 
 variable "cluster_version" {
   description = "Kubernetes <major>.<minor> version to use for the EKS cluster (i.e.: 1.24)"
-  default     = "1.24"
+  default     = "1.26"
   type        = string
-}
-
-variable "namespaces" {
-  description = "For each namespace this module will create a Fargate profile and a K8s namespace"
-  default     = []
-  type        = list(string)
 }
 
 variable "aws_load_balancer_controller" {
@@ -68,5 +69,21 @@ variable "aws_load_balancer_controller" {
     replica_count        = number
     namespace            = string
     service_account_name = string
+  })
+}
+
+variable "keda" {
+  description = "Keda configuration"
+  type = object({
+    helm_version = string
+    namespace    = string
+  })
+}
+
+variable "metrics_server" {
+  description = "K8s metrics server configuration"
+  type = object({
+    helm_version = string
+    namespace    = string
   })
 }

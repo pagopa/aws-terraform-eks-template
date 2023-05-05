@@ -2,34 +2,25 @@ env_short   = "d"
 environment = "dev"
 app_name    = "dvopla"
 
-vpc = {
-  id = "vpc-0e66e883cef1bf2fc"
-  intra_subnets_ids = [
-    "subnet-056f4c328617b7b75",
-    "subnet-073300df47548d58a",
-    "subnet-0b395725c694fea5c",
-  ]
-  private_subnets_ids = [
-    "subnet-0a530b8bb0301ab24",
-    "subnet-057a04e23ea870b58",
-    "subnet-04c042d372d21fe1a",
-  ]
-  public_subnets_ids = [
-    "subnet-09dfcc93797826229",
-    "subnet-0d31a81a8c82c4ded",
-    "subnet-03175ce3f5744b3f6",
-  ]
-}
-
+vpc_id                 = "vpc-07e680d083d85f636"
+nat_gateway_ids        = ["nat-00513a086ac6d89dd"]
 enable_public_endpoint = true
-
-namespaces = ["echoserver"]
 
 aws_load_balancer_controller = {
   helm_version         = "1.4.7"
   replica_count        = 1
   namespace            = "kube-system"
   service_account_name = "aws-load-balancer-controller"
+}
+
+keda = {
+  helm_version = "2.10.0"
+  namespace    = "keda"
+}
+
+metrics_server = {
+  helm_version = "3.10.0"
+  namespace    = "kube-system"
 }
 
 tags = {

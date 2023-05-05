@@ -2,7 +2,7 @@ env_short   = "d"
 environment = "dev"
 app_name    = "dvopla"
 
-vpc_enable_single_nat_gateway = true
+enable_single_nat_gateway = true
 
 tags = {
   CreatedBy   = "Terraform"
