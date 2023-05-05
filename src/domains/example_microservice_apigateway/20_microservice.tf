@@ -10,6 +10,7 @@ resource "helm_release" "echoserver" {
   name      = var.app_name
   namespace = kubernetes_namespace.this.id
 
+  # TODO: use GH https://github.com/pagopa/eks-microservice-chart-blueprint
   repository = "${path.module}/../../../../eks-microservice-chart-blueprint/charts"
   chart      = "microservice-chart"
   version    = "0.1.0"
