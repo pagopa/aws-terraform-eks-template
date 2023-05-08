@@ -8,37 +8,43 @@ resource "helm_release" "keda" {
   name       = "keda"
   chart      = "keda"
   repository = "https://kedacore.github.io/charts"
-  version    = var.keda.helm_version
+  version    = var.keda.chart_version
   namespace  = kubernetes_namespace.keda.id
 
-  # set {
-  #   name  = "operator.name"
-  #   value = "keda-operator"
-  # }
+  set {
+    name  = "image.keda.repository"
+    value = var.keda.keda.image_name
+  }
 
-  # set {
-  #   name  = "podSecurityContext.fsGroup"
-  #   value = 1001
-  # }
+  set {
+    name  = "image.keda.tag"
+    value = var.keda.keda.image_tag
+  }
 
-  # set {
-  #   name  = "securityContext.runAsGroup"
-  #   value = 1001
-  # }
+  set {
+    name  = "image.metrics_api_server.repository"
+    value = var.keda.metrics_api_server.image_name
+  }
 
-  # set {
-  #   name  = "securityContext.runAsUser"
-  #   value = 1001
-  # }
+  set {
+    name  = "image.metrics_api_server.tag"
+    value = var.keda.metrics_api_server.image_tag
+  }
 
+  set {
+    name  = "image.webhooks.repository"
+    value = var.keda.webhooks.image_name
+  }
+
+  set {
+    name  = "image.webhooks.tag"
+    value = var.keda.webhooks.image_tag
+  }
+
+  # https://github.com/kedacore/charts/blob/main/keda/values.yaml#L158
   # set {
   #   name  = "serviceAccount.create"
   #   value = false
-  # }
-
-  # set {
-  #   name  = "serviceAccount.name"
-  #   value = "keda-operator"
   # }
 }
 

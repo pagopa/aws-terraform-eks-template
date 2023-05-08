@@ -27,7 +27,7 @@ module "alb" {
       action_type = "fixed-response"
 
       fixed_response = {
-        message_body = jsonencode({ error = "No sevice available" })
+        message_body = jsonencode({ error = "No service available" })
         status_code  = 418
         content_type = "application/json"
       }

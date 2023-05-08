@@ -65,25 +65,42 @@ variable "cluster_version" {
 variable "aws_load_balancer_controller" {
   description = "AWS Load Balancer controller configuration"
   type = object({
-    helm_version         = string
+    chart_version        = string
     replica_count        = number
     namespace            = string
     service_account_name = string
+    image_name           = string
+    image_tag            = string
   })
 }
 
 variable "keda" {
   description = "Keda configuration"
   type = object({
-    helm_version = string
-    namespace    = string
+    chart_version = string
+    namespace     = string
+    keda = object({
+      image_name = string
+      image_tag  = string
+    })
+    metrics_api_server = object({
+      image_name = string
+      image_tag  = string
+    })
+    webhooks = object({
+      image_name = string
+      image_tag  = string
+    })
+
   })
 }
 
 variable "metrics_server" {
   description = "K8s metrics server configuration"
   type = object({
-    helm_version = string
-    namespace    = string
+    chart_version = string
+    namespace     = string
+    image_name    = string
+    image_tag     = string
   })
 }

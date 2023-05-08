@@ -2,8 +2,18 @@ resource "helm_release" "metrics_server" {
   name       = "metrics-server"
   chart      = "metrics-server"
   repository = "https://kubernetes-sigs.github.io/metrics-server"
-  version    = var.metrics_server.helm_version
+  version    = var.metrics_server.chart_version
   namespace  = var.metrics_server.namespace
+
+  set {
+    name  = "image.repository"
+    value = var.metrics_server.image_name
+  }
+
+  set {
+    name  = "image.tag"
+    value = var.metrics_server.image_tag
+  }
 
   set {
     name  = "containerPort"

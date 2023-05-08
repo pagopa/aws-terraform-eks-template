@@ -28,36 +28,36 @@ variable "env_short" {
   type        = string
 }
 
-variable "cf_aliases" {
+variable "aliases" {
   description = "Extra CNAMEs for the distribution"
   default     = []
   type        = list(string)
 }
 
-variable "cf_certificate_arn" {
+variable "certificate_arn" {
   description = "The SSL certificate arn for the given aliases"
   default     = null
   type        = string
 }
 
-variable "cf_price_class" {
+variable "price_class" {
   description = "https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/PriceClass.html"
   default     = "PriceClass_100"
   type        = string
 
   validation {
-    condition     = contains(["PriceClass_100", "PriceClass_200", "PriceClass_All"], var.cf_price_class)
-    error_message = "Allowed values for cf_price_class are \"PriceClass_100\", \"PriceClass_200\", \"PriceClass_All\"."
+    condition     = contains(["PriceClass_100", "PriceClass_200", "PriceClass_All"], var.price_class)
+    error_message = "Allowed values for price_class are \"PriceClass_100\", \"PriceClass_200\", \"PriceClass_All\"."
   }
 }
 
-variable "cf_default_root_object" {
+variable "default_root_object" {
   description = "The to return when an end user requests the root URL"
   default     = "index.html"
   type        = string
 }
 
-variable "cf_geo_restriction" {
+variable "geo_restriction" {
   description = "The geographical restriction for the distribution (locations are ISO 3166-1-alpha-2 codes compliant)"
   default = {
     type      = "none"
@@ -69,24 +69,12 @@ variable "cf_geo_restriction" {
   })
 
   validation {
-    condition     = contains(["none", "whitelist", "blacklist"], var.cf_geo_restriction.type)
-    error_message = "Allowed values for cf_geo_restriction.type are \"none\", \"whitelist\", \"blacklist\"."
+    condition     = contains(["none", "whitelist", "blacklist"], var.geo_restriction.type)
+    error_message = "Allowed values for geo_restriction.type are \"none\", \"whitelist\", \"blacklist\"."
   }
 }
 
-variable "cf_create_log_bucket" {
-  description = "If enabled, the bucket to store CloudFront logs will created"
-  default     = false
-  type        = bool
-}
-
-variable "cf_log_bucket_domain_name" {
-  description = "Use an existing bucket to store CloudFront logs"
-  default     = null
-  type        = string
-}
-
-variable "cf_create_monitoring_subscription" {
+variable "create_monitoring_subscription" {
   description = "If enabled, the resource for monitoring subscription will created"
   default     = false
   type        = bool

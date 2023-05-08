@@ -43,6 +43,15 @@ variable "namespace" {
   type        = string
 }
 
+variable "reloader" {
+  description = "Reloader configuration"
+  type = object({
+    chart_version = string
+    image_name    = string
+    image_tag     = string
+  })
+}
+
 variable "cors_fqdn" {
   description = "FQDN to allow CORS"
   type        = string
