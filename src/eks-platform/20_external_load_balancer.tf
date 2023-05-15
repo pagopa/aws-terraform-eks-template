@@ -27,16 +27,15 @@ module "alb" {
       action_type = "fixed-response"
 
       fixed_response = {
-        message_body = jsonencode({ error = "No service available" })
-        status_code  = 418
-        content_type = "application/json"
+        status_code  = 404
+        content_type = "text/plain"
       }
     }
   ]
 
   tags = {
     "elbv2.k8s.aws/cluster"    = module.eks.cluster_name
-    "ingress.k8s.aws/resource" = "LoadBalancer"
+    "ingress.k8s.aws/resource" = "80"
     "ingress.k8s.aws/stack"    = "${local.project}-alb"
   }
 }

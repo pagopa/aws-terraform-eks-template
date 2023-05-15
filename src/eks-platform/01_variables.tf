@@ -94,6 +94,28 @@ variable "keda" {
 
   })
 }
+variable "prometheus" {
+  description = "Prometheus configuration"
+  type = object({
+    chart_version = string,
+    configmap_reload_prometheus = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    node_exporter = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    server = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    pushgateway = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+  })
+}
 
 variable "metrics_server" {
   description = "K8s metrics server configuration"
