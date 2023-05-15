@@ -15,7 +15,7 @@ resource "kubernetes_config_map" "log" {
   }
 
   data = {
-    flb_log_cw     = "true"
+    flb_log_cw     = "false"
     "output.conf"  = <<-EOT
       [OUTPUT]
         Name cloudwatch_logs
