@@ -1,0 +1,55 @@
+name: example_microservice_gateway
+
+on:
+  push:
+    paths:
+      - src/domains/example_microservice_apigateway**
+
+env:
+  DIR: src/domains/example_microservice_apigateway
+  AWS_ENVIRONMENT: dev
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  static_analysis:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        id: checkout
+        # from https://github.com/actions/checkout/commits/main
+        uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - uses: hashicorp/setup-terraform@1fdd4cd311e198fb45135f3a68294d3df2d5bda8
+
+      - name: Cache terraform modules
+        uses: actions/cache@6fd2d4538ca777f67fccddb233cf1a8ff1339012
+        with:
+          path: ${{ env.DIR }}/.terraform
+          key: terraform-${{ env.DIR }}-${{ github.sha }}
+          restore-keys: |
+            terraform-${{ env.DIR }}
+
+      - name: Configure AWS credentials from Production account
+        uses: aws-actions/configure-aws-credentials@d713a182c5467df241c7509cf48b1c382c46080d
+        with:
+          role-to-assume: ${{ secrets.AWS_GHACTION_ROLE_ARN }}
+          aws-region: eu-south-1
+
+      - name: Terraform plan
+        shell: bash
+        run: |
+          cd ${{ env.DIR }}
+          bash terraform.sh plan ${{ env.AWS_ENVIRONMENT }} -lock-timeout=300s -lock=false
+
+      - name: Terraform apply
+        shell: bash
+        run: |
+          cd ${{ env.DIR }}
+          bash terraform.sh apply ${{ env.AWS_ENVIRONMENT }} -lock-timeout=3000s -auto-approve

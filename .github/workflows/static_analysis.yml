@@ -25,7 +25,12 @@ jobs:
             src/init
             src/core
             src/eks-platform
-            src/domains/echoserver
+            src/domains/example_microservice_apigateway
+            src/domains/example_microservice_cache
+            src/domains/example_microservice_cloudfront
+            src/domains/example_microservice_dynamodb
+            src/domains/example_microservice_kafka
+            src/domains/example_microservice_rds
         run: |
           pids=()
 

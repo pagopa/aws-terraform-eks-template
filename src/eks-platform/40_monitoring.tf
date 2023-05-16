@@ -55,7 +55,7 @@ resource "kubernetes_manifest" "keda_sg" {
 
     metadata = {
       name      = "keda"
-      namespace  = kubernetes_namespace.keda.id
+      namespace = kubernetes_namespace.keda.id
     }
 
     spec = {
@@ -116,7 +116,7 @@ resource "kubernetes_manifest" "metrics_server_sg" {
 
     metadata = {
       name      = "metrics-server"
-      namespace  = kubernetes_namespace.monitoring.id
+      namespace = kubernetes_namespace.monitoring.id
     }
 
     spec = {
