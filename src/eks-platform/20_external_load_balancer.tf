@@ -2,6 +2,8 @@ module "alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = ">= 8.3.1"
 
+  enable_deletion_protection = true
+
   name               = "${local.project}-alb"
   internal           = true
   load_balancer_type = "application"
@@ -43,6 +45,8 @@ module "alb" {
 module "nlb" {
   source  = "terraform-aws-modules/alb/aws"
   version = ">= 8.3.1"
+
+  enable_deletion_protection = true
 
   name               = "${local.project}-nlb"
   internal           = true
