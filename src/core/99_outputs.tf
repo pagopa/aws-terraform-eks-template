@@ -9,6 +9,11 @@ output "public_subnets_ids" {
 }
 
 output "nat_ids" {
-  description = "Id list of the nat gatways subnets"
+  description = "Id list of the NAT gatways"
   value       = aws_nat_gateway.this[*].id
+}
+
+output "nat_eips" {
+  description = "EIP list of the NAT gatways"
+  value       = aws_eip.nat[*].public_ip
 }
