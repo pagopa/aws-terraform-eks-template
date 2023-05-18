@@ -10,10 +10,12 @@ module "eks" {
 
   cluster_addons = {
     kube-proxy = {
-      most_recent = true
+      most_recent       = true
+      resolve_conflicts = "NONE"
     }
     vpc-cni = {
-      most_recent = true
+      most_recent       = true
+      resolve_conflicts = "NONE"
       configuration_values = jsonencode({
         env = {
           ENABLE_POD_ENI = "true"
@@ -21,7 +23,8 @@ module "eks" {
       })
     }
     coredns = {
-      most_recent = true
+      most_recent       = true
+      resolve_conflicts = "NONE"
       configuration_values = jsonencode({
         computeType = "Fargate"
       })
