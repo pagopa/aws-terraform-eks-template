@@ -126,3 +126,12 @@ variable "metrics_server" {
     image_tag     = string
   })
 }
+
+variable "reloader" {
+  description = "Reloader configuration"
+  type = object({
+    chart_version = string
+    image_name    = string
+    image_tag     = string
+  })
+}

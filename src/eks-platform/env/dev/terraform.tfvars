@@ -62,6 +62,12 @@ metrics_server = {
   image_tag     = "v0.6.3@sha256:c60778fa1c44d0c5a0c4530ebe83f9243ee6fc02f4c3dc59226c201931350b10"
 }
 
+reloader = {
+  chart_version = "v1.0.22"
+  image_name    = "ghcr.io/stakater/reloader"
+  image_tag     = "v1.0.22@sha256:c768605b16baa78c075d1bfb2122281201fd2da674ce1d6b410fa929c157693b"
+}
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
