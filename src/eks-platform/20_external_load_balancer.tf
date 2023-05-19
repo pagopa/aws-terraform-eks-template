@@ -19,6 +19,14 @@ module "alb" {
       description = "HTTP web traffic"
       # source_security_group_id = module.nlb.security_group_id
       cidr_blocks = ["0.0.0.0/0"]
+    },
+    egress_all = {
+      type        = "egress"
+      from_port   = 1
+      to_port     = 65535
+      protocol    = "tcp"
+      description = "All traffic"
+      cidr_blocks = ["0.0.0.0/0"]
     }
   }
 
