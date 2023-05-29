@@ -157,6 +157,26 @@ resource "helm_release" "prometheus" {
     name  = "alertmanager.enabled"
     value = false
   }
+
+  set {
+    name  = "server.resources.limits.memory"
+    value = "1500Mi"
+  }
+
+  set {
+    name  = "server.resources.limits.cpu"
+    value = "1200m"
+  }
+
+  set {
+    name  = "server.resources.requests.memory"
+    value = "250Mi"
+  }
+
+  set {
+    name  = "server.resources.requests.cpu"
+    value = "250m"
+  }
 }
 
 resource "helm_release" "monitoring_reloader" {
