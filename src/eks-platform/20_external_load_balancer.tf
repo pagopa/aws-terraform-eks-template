@@ -37,17 +37,11 @@ module "alb" {
       action_type = "fixed-response"
 
       fixed_response = {
-        status_code  = 404
+        status_code  = 403
         content_type = "text/plain"
       }
     }
   ]
-
-  tags = {
-    "elbv2.k8s.aws/cluster"    = module.eks.cluster_name
-    "ingress.k8s.aws/resource" = "80"
-    "ingress.k8s.aws/stack"    = "${local.project}-alb"
-  }
 }
 
 module "nlb" {

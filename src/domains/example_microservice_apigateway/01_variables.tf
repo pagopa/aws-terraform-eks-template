@@ -33,6 +33,21 @@ variable "cluster_nlb_url" {
   type        = string
 }
 
+variable "cluster_security_group_id" {
+  description = "Security group id of the EKS cluster"
+  type        = string
+}
+
+variable "vpc_id" {
+  description = "VPC id to deploy the ALB target group"
+  type        = string
+}
+
+variable "alb_listener_arn" {
+  description = "ARN of the ALB listener"
+  type        = string
+}
+
 variable "vpc_link_id" {
   description = "VPC link id targeting cluster NLB"
   type        = string
