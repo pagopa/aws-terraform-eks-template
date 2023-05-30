@@ -144,6 +144,11 @@ resource "helm_release" "prometheus" {
   namespace  = kubernetes_namespace.monitoring.id
 
   set {
+    name  = "server.retention"
+    value = "1d"
+  }
+
+  set {
     name  = "server.global.scrape_interval"
     value = "30s"
   }
