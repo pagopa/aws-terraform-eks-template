@@ -144,6 +144,11 @@ resource "helm_release" "prometheus" {
   namespace  = kubernetes_namespace.monitoring.id
 
   set {
+    name  = "configmapReload.prometheus.enabled"
+    value = false
+  }
+
+  set {
     name  = "server.retention"
     value = "1d"
   }
