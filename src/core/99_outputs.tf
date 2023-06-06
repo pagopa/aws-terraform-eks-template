@@ -17,3 +17,8 @@ output "nat_eips" {
   description = "EIP list of the NAT gatways"
   value       = aws_eip.nat[*].public_ip
 }
+
+output "ns_eks_pagopa_it" {
+  description = "NS record for given hosted zone"
+  value       = aws_route53_zone.eks_pagopa_it.name_servers
+}
