@@ -18,7 +18,7 @@ output "nat_eips" {
   value       = aws_eip.nat[*].public_ip
 }
 
-output "ns_eks_pagopa_it" {
+output "ns_env_eks_pagopa_it" {
   description = "NS record for given hosted zone"
-  value       = aws_route53_zone.eks_pagopa_it.name_servers
+  value       = aws_route53_zone.env_eks_pagopa_it.name_servers
 }
