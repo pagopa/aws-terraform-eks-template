@@ -144,18 +144,8 @@ resource "helm_release" "prometheus" {
   namespace  = kubernetes_namespace.monitoring.id
 
   set {
-    name  = "configmapReload.prometheus.enabled"
-    value = false
-  }
-
-  set {
-    name  = "server.retention"
-    value = "1d"
-  }
-
-  set {
     name  = "server.global.scrape_interval"
-    value = "30s"
+    value = "10s"
   }
 
   set {
@@ -170,12 +160,12 @@ resource "helm_release" "prometheus" {
 
   set {
     name  = "server.resources.limits.memory"
-    value = "1500Mi"
+    value = "2000Mi"
   }
 
   set {
     name  = "server.resources.limits.cpu"
-    value = "1200m"
+    value = "1500m"
   }
 
   set {
