@@ -28,15 +28,13 @@ variable "env_short" {
   type        = string
 }
 
-variable "aliases" {
-  description = "Extra CNAMEs for the distribution"
-  default     = []
-  type        = list(string)
+variable "alias" {
+  description = "Extra CNAME for the distribution"
+  type        = string
 }
 
-variable "certificate_arn" {
-  description = "The SSL certificate arn for the given aliases"
-  default     = null
+variable "hosted_zone_id" {
+  description = "Id of the Route53 hosted zone"
   type        = string
 }
 

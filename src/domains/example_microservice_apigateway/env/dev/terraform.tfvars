@@ -7,7 +7,7 @@ vpc_id                    = "vpc-07e680d083d85f636"
 vpc_link_id               = "anuipc"
 alb_listener_arn          = "arn:aws:elasticloadbalancing:eu-south-1:794703684555:listener/app/dvopla-d-alb/24f585bce8efa4e0/242323bb5a5bb6db"
 namespace                 = "example-apigateway"
-cors_fqdn                 = "https://d3av01txhd75u9.cloudfront.net"
+cors_fqdn                 = "https://cdn.dev.eks.pagopa.it"
 
 reloader = {
   chart_version = "v1.0.22"

@@ -2,13 +2,12 @@ module "cloudfront" {
   source  = "terraform-aws-modules/cloudfront/aws"
   version = "~> 3.2.0"
 
-  aliases = var.aliases
+  aliases = [var.alias]
 
   viewer_certificate = {
-    cloudfront_default_certificate = var.certificate_arn == null ? true : null
-    acm_certificate_arn            = var.certificate_arn
-    minimum_protocol_version       = var.certificate_arn == null ? "TLSv1" : "TLSv1.2_2021"
-    ssl_support_method             = var.certificate_arn == null ? null : "sni-only"
+    acm_certificate_arn      = module.acm.acm_certificate_arn
+    minimum_protocol_version = "TLSv1.2_2021"
+    ssl_support_method       = "sni-only"
   }
 
   comment             = local.project
