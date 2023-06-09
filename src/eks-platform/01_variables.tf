@@ -135,3 +135,9 @@ variable "reloader" {
     image_tag     = string
   })
 }
+
+variable "sentinel_bucket_arn" {
+  description = "S3 bucket arn connect to sentinel"
+  default     = null
+  type        = string
+}
