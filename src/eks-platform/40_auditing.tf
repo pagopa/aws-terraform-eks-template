@@ -1,5 +1,9 @@
+locals {
+  create_bucket = var.sentinel_bucket_arn == null
+}
+
 resource "aws_s3_bucket" "audit_export" {
-  count  = var.sentinel_bucket_arn == null ? 1 : 0
+  count  = local.create_bucket ? 1 : 0
   bucket = "${local.project}-eks-audit-for-sentinel"
 }
 
@@ -40,9 +44,7 @@ resource "aws_iam_policy" "audit_exporter_execute" {
         Sid      = "AllowImportLogs"
         Effect   = "Allow"
         Action   = ["s3:PutObject", "s3:GetObject"],
-        Resource = var.sentinel_bucket_arn == null ?
-          "arn:aws:s3:::${aws_s3_bucket.audit_export[0].bucket}/*" :
-          "${var.sentinel_bucket_arn}/*"
+        Resource = local.create_bucket ? "arn:aws:s3:::${aws_s3_bucket.audit_export[0].bucket}/*" : "${var.sentinel_bucket_arn}/*"
       }
     ]
   })
@@ -79,9 +81,7 @@ module "audit_exporter" {
   policy        = aws_iam_policy.audit_exporter_execute.arn
 
   environment_variables = {
-    BUCKET_NAME = var.sentinel_bucket_arn == null ?
-      aws_s3_bucket.audit_export[0].bucket :
-      split(":", var.sentinel_bucket_arn)[5]
+    BUCKET_NAME = local.create_bucket ? aws_s3_bucket.audit_export[0].bucket : split(":", var.sentinel_bucket_arn)[5]
   }
 }
 
