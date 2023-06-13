@@ -36,8 +36,6 @@ provider "helm" {
 }
 
 locals {
-  project          = format("%s-%s", var.app_name, var.env_short)
+  project          = "${var.app_name}-${var.env_short}"
   aws_lb_role_name = "aws-load-balancer-controller"
 }
-
-data "aws_caller_identity" "current" {}

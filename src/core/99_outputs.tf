@@ -8,14 +8,19 @@ output "public_subnets_ids" {
   value       = module.vpc.public_subnets
 }
 
+output "github_runners_subnet_id" {
+  description = "Id of the subnet that host the ECS cluster"
+  value       = module.vpc.private_subnets
+}
+
 output "nat_ids" {
   description = "Id list of the NAT gatways"
-  value       = aws_nat_gateway.this[*].id
+  value       = module.vpc.natgw_ids
 }
 
 output "nat_eips" {
   description = "EIP list of the NAT gatways"
-  value       = aws_eip.nat[*].public_ip
+  value       = module.vpc.nat_public_ips
 }
 
 output "hosted_zone_id_env_eks_pagopa_it" {

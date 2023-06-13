@@ -3,7 +3,7 @@ environment = "dev"
 app_name    = "dvopla"
 
 vpc_id                 = "vpc-07e680d083d85f636"
-nat_gateway_ids        = ["nat-00513a086ac6d89dd"]
+nat_gateway_ids        = ["nat-0d7267450a50bd589"]
 enable_public_endpoint = true
 
 aws_load_balancer_controller = {
