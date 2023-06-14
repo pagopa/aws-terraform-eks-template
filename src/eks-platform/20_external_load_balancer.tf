@@ -11,15 +11,6 @@ module "alb" {
   subnets            = aws_subnet.this[*].id
 
   security_group_rules = {
-    ingress_all_http = {
-      type        = "ingress"
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      description = "HTTP web traffic"
-      # source_security_group_id = module.nlb.security_group_id
-      cidr_blocks = ["0.0.0.0/0"]
-    },
     egress_all = {
       type        = "egress"
       from_port   = 1
@@ -87,4 +78,34 @@ module "nlb" {
       }
     }
   ]
+}
+
+
+data "aws_network_interface" "nlb" {
+  for_each = toset(aws_subnet.this[*].id)
+
+  filter {
+    name   = "description"
+    values = ["ELB ${module.nlb.lb_arn_suffix}"]
+  }
+
+  filter {
+    name   = "interface-type"
+    values = ["network_load_balancer"]
+  }
+
+  filter {
+    name   = "subnet-id"
+    values = [each.value]
+  }
+}
+
+resource "aws_security_group_rule" "allow_nlb_connections" {
+  security_group_id = module.alb.security_group_id
+  description       = "Allow access from NLB"
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = [for eni in data.aws_network_interface.nlb : "${eni.private_ip}/32"]
 }
