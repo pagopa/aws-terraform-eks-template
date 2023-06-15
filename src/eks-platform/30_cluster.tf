@@ -1,6 +1,6 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.7.0"
+  version = "~> 19.15.3"
 
   cluster_name                   = local.project
   cluster_version                = var.cluster_version
@@ -10,12 +10,15 @@ module "eks" {
 
   cluster_addons = {
     kube-proxy = {
-      most_recent       = true
-      resolve_conflicts = "NONE"
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "PRESERVE"
     }
     vpc-cni = {
-      most_recent       = true
-      resolve_conflicts = "NONE"
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "PRESERVE"
+
       configuration_values = jsonencode({
         env = {
           ENABLE_POD_ENI = "true"
@@ -23,8 +26,10 @@ module "eks" {
       })
     }
     coredns = {
-      most_recent       = true
-      resolve_conflicts = "NONE"
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "PRESERVE"
+
       configuration_values = jsonencode({
         computeType = "Fargate"
       })

@@ -136,6 +136,34 @@ variable "reloader" {
   })
 }
 
+variable "cert_manager" {
+  description = "CertManager configuration"
+  type = object({
+    chart_version = string
+    namespace     = string
+    controller = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    cainjector = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    webhook = object({
+      image_name = string,
+      image_tag  = string,
+    })
+    startupapicheck = object({
+      image_name = string,
+      image_tag  = string,
+    })
+    acmesolver = object({
+      image_name = string,
+      image_tag  = string,
+    })
+  })
+}
+
 variable "sentinel_bucket_arn" {
   description = "S3 bucket arn connect to sentinel"
   default     = null

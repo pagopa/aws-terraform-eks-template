@@ -68,6 +68,31 @@ reloader = {
   image_tag     = "v1.0.22@sha256:c768605b16baa78c075d1bfb2122281201fd2da674ce1d6b410fa929c157693b"
 }
 
+cert_manager = {
+  chart_version = "1.12.1"
+  namespace     = "kube-system"
+  controller = {
+    image_name = "quay.io/jetstack/cert-manager-controller"
+    image_tag  = "v1.12.1@sha256:63a7aa17a1b1ac982ae89eeac0217a505a3bd2a07f65949077efa47ce4f7c86d"
+  }
+  cainjector = {
+    image_name = "quay.io/jetstack/cert-manager-cainjector"
+    image_tag  = "v1.12.1@sha256:7c65d8478484155f6f1886b1ed60064e854c7c371b1fddbe220c71e5574e6526"
+  }
+  webhook = {
+    image_name = "quay.io/jetstack/cert-manager-webhook"
+    image_tag  = "v1.12.1@sha256:c5644d09c6cfce8059f6b8979fb43f14ca326921a87b571a62ce9ee6dcdf014c"
+  }
+  startupapicheck = {
+    image_name = "quay.io/jetstack/cert-manager-ctl"
+    image_tag  = "v1.12.1@sha256:a11327595e62843e0248a9052ea94b47f92eac8fb3b373b3134138e6380886f5"
+  }
+  acmesolver = {
+    image_name = "quay.io/jetstack/cert-manager-acmesolver"
+    image_tag  = "v1.12.1@sha256:65bd34918063ae36550a7351e458aff5589463605bc2db08f3043ca7017ed30d"
+  }
+}
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
