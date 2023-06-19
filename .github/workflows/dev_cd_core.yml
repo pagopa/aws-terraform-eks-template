@@ -42,10 +42,26 @@ jobs:
           ecs_task_subnet_id: ${{ secrets.SUBNET_ID }}
           ecs_task_sec_group: ${{ secrets.SEC_GROUP_ID }}
           pat_token: ${{ secrets.BOT_TOKEN }}
+      - name: testpre
+        id: testpre
+        shell: bash
+        run: |
+          MYTEST="something"
+          # echo "::set-output name=mytest::${MYTEST}"
+          echo "MYTEST=${MYTEST}"
+      - name: test
+        id: test
+        shell: bash
+        run: |
+          echo ${{ steps.testpre.outputs.mytest }}
+          echo ${{ steps.testpre.outputs.MYTEST }}
+          echo "${{ steps.testpre.outputs.mytest }}"
+          echo "${{ steps.testpre.outputs.MYTEST }}"
 
   terraform_plan_job:
     name: Terraform Plan
-    runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
+    # runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
+    runs-on: [self-hosted]
     environment: dev-ci
     needs: create_runner
     steps:
@@ -60,11 +76,11 @@ jobs:
       - name: Setup terraform
         id: setup-version
         # https://github.com/pagopa/terraform-install-action/commits/main
-        uses: pagopa/eng-github-actions-iac-template/tree/main/terraform/terraform-install-action@main
+        uses: pagopa/eng-github-actions-iac-template/terraform/terraform-install-action@main
 
       - name: Terraform plan
         # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
-        uses: pagopa/eng-github-actions-iac-template/tree/main/aws/terraform-plan-aws-action@main
+        uses: pagopa/eng-github-actions-iac-template/aws/terraform-plan-aws-action@main
         with:
           aws_iam_role: ${{ secrets.AWS_IAM_ROLE_READ_ONLY }}
           aws_region: ${{ secrets.AWS_REGION }}
