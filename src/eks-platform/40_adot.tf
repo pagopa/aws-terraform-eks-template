@@ -114,12 +114,12 @@ resource "aws_eks_addon" "adot" {
       }
       resources = {
         requests = {
-          cpu = "1000m"
+          cpu    = "1000m"
           memory = "2Gi"
         }
 
         limits = {
-          cpu = "1500m"
+          cpu    = "1500m"
           memory = "4Gi"
         }
       }
