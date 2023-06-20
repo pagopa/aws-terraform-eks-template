@@ -33,7 +33,6 @@ import pandas as pd
 from gzip import decompress
 from base64 import b64decode
 
-logs = boto3.client('logs')
 s3 = boto3.resource('s3')
 
 BUCKET_NAME = os.environ['BUCKET_NAME']
