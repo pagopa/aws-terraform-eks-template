@@ -1,4 +1,4 @@
-name: Continuous Integration on dev core
+name: CI on DEV core
 
 on:
   workflow_dispatch:
@@ -48,7 +48,7 @@ jobs:
         run: |
           MYTEST="something"
           # echo "::set-output name=mytest::${MYTEST}"
-          echo "MYTEST=${MYTEST}"
+          echo "MYTEST=${MYTEST}" >> $GITHUB_OUTPUT
       - name: test
         id: test
         shell: bash
@@ -82,7 +82,7 @@ jobs:
         # from https://github.com/pagopa/terraform-plan-azure-action/commits/main
         uses: pagopa/eng-github-actions-iac-template/aws/terraform-plan-aws-action@main
         with:
-          aws_iam_role: ${{ secrets.AWS_IAM_ROLE_READ_ONLY }}
+          iam_role: ${{ secrets.AWS_IAM_ROLE_READ_ONLY }}
           aws_region: ${{ secrets.AWS_REGION }}
           dir: ${{ env.DIR }}
           aws_environment: ${{ env.AWS_ENVIRONMENT }}

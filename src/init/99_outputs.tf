@@ -11,12 +11,12 @@ output "iac_admin_role_arn" {
   description = "Role to use in github actions to build the infrastructure."
 }
 
-output "iac_admin_ro_arn" {
+output "iac_ro_role_arn" {
   value       = aws_iam_role.githubiac["ReadOnly"].arn
   description = "Role to use in github actions to read over the infrastructure."
 }
 
-output "iac_admin_ecsrunner_arn" {
+output "iac_ecsrunner_role_arn" {
   value       = aws_iam_role.githubiac["ECSRunner"].arn
   description = "Role to use in github actions to manage ECS."
 }
