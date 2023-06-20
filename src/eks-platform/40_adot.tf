@@ -80,7 +80,7 @@ module "adot_irsa_role" {
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["opentelemetry-operator-system:aws-otel-collector"]
+      namespace_service_accounts = ["opentelemetry-operator-system:adot-collector"]
     }
   }
 }
@@ -99,32 +99,18 @@ resource "aws_eks_addon" "adot" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
 
-  configuration_values = jsonencode({
-    collector = {
-      cloudwatch = {
-        enabled = true
-      }
-      xray = {
-        enabled = true
-      }
-      serviceAccount = {
-        annotations = {
-          "eks.amazonaws.com/role-arn" = module.adot_irsa_role.iam_role_arn
-        }
-      }
-      resources = {
-        requests = {
-          cpu    = "1000m"
-          memory = "2Gi"
-        }
-
-        limits = {
-          cpu    = "1500m"
-          memory = "4Gi"
-        }
-      }
-    }
-  })
-
   depends_on = [helm_release.cert_manager]
+}
+
+resource "kubernetes_manifest" "adot_collector" {
+  for_each = fileset("${path.module}/assets/adot_collector/", "*.yaml")
+
+  manifest = yamldecode(templatefile("${path.module}/assets/adot_collector/${each.value}", {
+    cluster_name = module.eks.cluster_name
+    namespace    = "opentelemetry-operator-system"
+    aws_region   = var.aws_region
+    aws_role_arn = module.adot_irsa_role.iam_role_arn
+  }))
+
+  depends_on = [aws_eks_addon.adot]
 }
