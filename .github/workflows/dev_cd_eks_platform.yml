@@ -1,0 +1,132 @@
+name: CI on DEV eks_platform
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - reopened
+    paths:
+      - 'src/eks_platform/**'
+      - '.github/workflows/dev**'
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  DIR: "src/eks_platform"
+  AWS_ENVIRONMENT: dev
+
+jobs:
+
+  create_runner:
+    name: Create Runner
+    runs-on: ubuntu-22.04
+    environment: dev-runner
+    outputs:
+      runner_name: ${{ steps.create_github_runner.outputs.runner_name }}
+    steps:
+      - name: Create GitHub Runner
+        id: create_github_runner
+        # from https://github.com/pagopa/github-self-hosted-runner-azure-create-action/commits/main
+        uses: pagopa/interop-github-runner-aws-create-action@main
+        with:
+          aws_region: ${{ secrets.AWS_REGION }}
+          iam_role_arn: ${{ secrets.ECS_IAM_ROLE_ARN }}
+          ecs_cluster_name: ${{ secrets.ECS_CLUSTER_NAME }}
+          ecs_task_definition: ${{ secrets.TASK_DEFINITION }}
+          ecs_container_name: github-runner
+          ecs_task_subnet_id: ${{ secrets.SUBNET_ID }}
+          ecs_task_sec_group: ${{ secrets.SEC_GROUP_ID }}
+          pat_token: ${{ secrets.BOT_TOKEN }}
+
+  terraform_plan_job:
+    name: Terraform Plan
+    # runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
+    # There is a bug in needs action
+    runs-on: [self-hosted]
+    environment: dev-ci
+    needs: create_runner
+    steps:
+      - name: Checkout
+        id: checkout
+        # from https://github.com/actions/checkout/commits/main
+        uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup terraform
+        id: setup-version
+        uses: pagopa/eng-github-actions-iac-template/terraform/terraform-install-action@main
+
+      - name: Setup kubectl
+        id: configure-context
+        uses: pagopa/eng-github-actions-iac-template/aws/kubectl-eks-action@aws-actions
+
+      - name: Terraform plan
+        uses: pagopa/eng-github-actions-iac-template/aws/terraform-plan-aws-action@aws-actions
+        with:
+          aws_iam_role: ${{ secrets.AWS_IAM_ROLE_READ_ONLY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          dir: ${{ env.DIR }}
+          aws_environment: ${{ env.AWS_ENVIRONMENT }}
+
+  terraform_apply_job:
+    name: Terraform Apply
+    # runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
+    # There is a bug in needs action
+    runs-on: [self-hosted]
+    environment: dev-ci
+    needs: [create_runner, terraform_plan_job]
+    steps:
+      - name: Checkout
+        id: checkout
+        # from https://github.com/actions/checkout/commits/main
+        uses: actions/checkout@1f9a0c22da41e6ebfa534300ef656657ea2c6707
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+
+      - name: Setup terraform
+        id: setup-version
+        uses: pagopa/eng-github-actions-iac-template/terraform/terraform-install-action@main
+
+      - name: Setup kubectl
+        id: configure-context
+        uses: pagopa/eng-github-actions-iac-template/aws/kubectl-eks-action@aws-actions
+
+      - name: Terraform preapply
+        uses: pagopa/eng-github-actions-iac-template/aws/terraform-preapply-aws-action@aws-actions
+        with:
+          aws_iam_role: ${{ secrets.AWS_IAM_ROLE_ADMIN }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          dir: ${{ env.DIR }}
+          aws_environment: ${{ env.AWS_ENVIRONMENT }}
+
+      - name: Terraform apply
+        uses: pagopa/eng-github-actions-iac-template/aws/terraform-apply-aws-action@aws-actions
+        with:
+          aws_iam_role: ${{ secrets.AWS_IAM_ROLE_ADMIN }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          dir: ${{ env.DIR }}
+          aws_environment: ${{ env.AWS_ENVIRONMENT }}
+
+  cleanup_runner:
+    name: Cleanup Runner
+    if: always()
+    runs-on: ubuntu-22.04
+    environment: dev-runner
+    needs: [create_runner, terraform_plan_job, terraform_apply_job]
+    steps:
+      - name: Cleanup GitHub Runner
+        id: cleanup_github_runner
+        uses: pagopa/interop-github-runner-aws-cleanup-action@main
+        with:
+          aws_region: ${{ secrets.AWS_REGION }}
+          iam_role_arn: ${{ secrets.ECS_IAM_ROLE_ARN }}
+          ecs_cluster_name: ${{ secrets.ECS_CLUSTER_NAME }}
+          pat_token: ${{ secrets.BOT_TOKEN }}
