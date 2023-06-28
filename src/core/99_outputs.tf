@@ -13,6 +13,11 @@ output "github_runners_subnet_id" {
   value       = module.vpc.private_subnets
 }
 
+output "github_runners_sg_id" {
+  description = "Id of the security group associated with GH runners"
+  value       = aws_security_group.github_runners.id
+}
+
 output "nat_ids" {
   description = "Id list of the NAT gatways"
   value       = module.vpc.natgw_ids

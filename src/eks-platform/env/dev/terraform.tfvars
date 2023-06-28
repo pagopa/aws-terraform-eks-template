@@ -93,6 +93,8 @@ cert_manager = {
   }
 }
 
+github_runners_sg_id = "sg-02d3b6b7a8df9c9ee"
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"

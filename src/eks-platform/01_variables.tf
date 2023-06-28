@@ -169,3 +169,9 @@ variable "sentinel_bucket_arn" {
   default     = null
   type        = string
 }
+
+variable "github_runners_sg_id" {
+  description = "Security group of the GitHub Runners"
+  default     = null
+  type        = string
+}

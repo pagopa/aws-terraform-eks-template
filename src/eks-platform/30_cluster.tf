@@ -69,3 +69,16 @@ resource "aws_security_group_rule" "allow_lb_connections" {
   protocol                 = "all"
   source_security_group_id = module.alb.security_group_id
 }
+
+resource "aws_security_group_rule" "allow_ecs_github_runners" {
+  count = var.github_runners_sg_id == null ? 0 : 1
+
+  security_group_id = module.eks.cluster_primary_security_group_id
+  description       = "Allow access from ECS GH runners cluster"
+
+  type                     = "ingress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "TCP"
+  source_security_group_id = var.github_runners_sg_id
+}
