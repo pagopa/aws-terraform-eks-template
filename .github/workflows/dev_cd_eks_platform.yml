@@ -1,4 +1,4 @@
-name: CI on DEV eks_platform
+name: CI on DEV eks-platform
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
       - synchronize
       - reopened
     paths:
-      - 'src/eks_platform/**'
+      - 'src/eks-platform/**'
       - '.github/workflows/dev**'
 
 permissions:
@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 env:
-  DIR: "src/eks_platform"
+  DIR: "src/eks-platform"
   AWS_ENVIRONMENT: dev
 
 jobs:
@@ -45,7 +45,6 @@ jobs:
   terraform_plan_job:
     name: Terraform Plan
     # runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
-    # There is a bug in needs action
     runs-on: [self-hosted]
     environment: dev-ci
     needs: create_runner
@@ -65,6 +64,10 @@ jobs:
       - name: Setup kubectl
         id: configure-context
         uses: pagopa/eng-github-actions-iac-template/aws/kubectl-eks-action@aws-actions
+        with:
+          aws_iam_role: ${{ secrets.AWS_IAM_ROLE_READ_ONLY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          eks_cluster_name: ${{ secrets.EKS_CLUSTER_NAME }}
 
       - name: Terraform plan
         uses: pagopa/eng-github-actions-iac-template/aws/terraform-plan-aws-action@aws-actions
