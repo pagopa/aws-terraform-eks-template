@@ -175,3 +175,12 @@ variable "github_runners_sg_id" {
   default     = null
   type        = string
 }
+
+variable "eks_auth" {
+  description = "List of roles and ClusterRoleBindings"
+  default     = []
+  type        = list(object({
+    groups = list(string)
+    role_arn = string
+  }))
+}

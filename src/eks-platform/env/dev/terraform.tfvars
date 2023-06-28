@@ -95,6 +95,21 @@ cert_manager = {
 
 github_runners_sg_id = "sg-02d3b6b7a8df9c9ee"
 
+eks_auth = [
+  {
+    groups = ["system:masters"]
+    role_arn = "arn:aws:iam::794703684555:role/GitHubActionIACAdmin"
+  },
+  {
+    groups = ["system:masters"]
+    role_arn = "arn:aws:iam::794703684555:role/GitHubActionIACECSRunner"
+  },
+  {
+    groups = ["system:masters"]
+    role_arn = "arn:aws:iam::794703684555:role/GitHubActionIACReadOnly"
+  }
+]
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"
