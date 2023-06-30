@@ -100,6 +100,10 @@ jobs:
       - name: Setup kubectl
         id: configure-context
         uses: pagopa/eng-github-actions-iac-template/aws/kubectl-eks-action@aws-actions
+        with:
+          aws_iam_role: ${{ secrets.AWS_IAM_ROLE_READ_ONLY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          eks_cluster_name: ${{ secrets.EKS_CLUSTER_NAME }}
 
       - name: Terraform preapply
         uses: pagopa/eng-github-actions-iac-template/aws/terraform-preapply-aws-action@aws-actions
