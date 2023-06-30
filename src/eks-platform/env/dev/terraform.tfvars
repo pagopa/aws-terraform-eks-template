@@ -110,6 +110,16 @@ eks_auth = [
   }
 ]
 
+kms_auth = {
+  admins = [
+    "arn:aws:iam::794703684555:user/matteo.cellucci",
+    "arn:aws:iam::794703684555:role/GitHubActionIACAdmin",
+    "arn:aws:iam::794703684555:role/GitHubActionIACReadOnly"
+  ]
+  services = []
+  users = []
+}
+
 tags = {
   CreatedBy   = "Terraform"
   Environment = "Dev"

@@ -57,6 +57,10 @@ module "eks" {
       }
     }
   )
+
+  kms_key_administrators = var.kms_auth.admins
+  kms_key_service_users = var.kms_auth.services
+  kms_key_users = var.kms_auth.users
 }
 
 resource "aws_security_group_rule" "allow_lb_connections" {

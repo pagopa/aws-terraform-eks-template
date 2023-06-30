@@ -133,26 +133,6 @@ resource "aws_iam_role_policy_attachment" "githubiac_ro" {
   policy_arn = data.aws_iam_policy.read_only_access.arn
 }
 
-resource "aws_iam_role_policy" "extra_githubiac_ro" {
-  role = aws_iam_role.githubiac["ReadOnly"].name
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid    = "ReadOnlyAccessForOperationsWithNoKMSKey"
-        Effect = "Allow"
-        Action = [
-          "kms:ListKeys",
-          "kms:ListAliases",
-          "kms:DescribeKey"
-        ]
-        Resource = "*"
-      }
-    ]
-  })
-}
-
 resource "aws_iam_role_policy" "extra_githubiac_ecsrunner" {
   role = aws_iam_role.githubiac["ECSRunner"].name
 
