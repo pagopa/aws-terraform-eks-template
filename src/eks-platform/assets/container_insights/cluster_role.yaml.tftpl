@@ -15,4 +15,7 @@ rules:
     verbs: ["get", "list", "watch"]
   - nonResourceURLs: [ "/metrics/cadvisor"]
     verbs: ["get", "list", "watch"]
-
+  - apiGroups: [""]
+    resources:
+      - configmaps
+    verbs: ["*"]

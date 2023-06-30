@@ -1,3 +1,9 @@
+data "aws_eks_addon_version" "adot" {
+  addon_name         = "adot"
+  kubernetes_version = var.cluster_version
+  most_recent        = true
+}
+
 resource "helm_release" "cert_manager" {
   name       = "cert-manager"
   chart      = "cert-manager"
@@ -66,6 +72,16 @@ resource "helm_release" "cert_manager" {
   }
 }
 
+resource "kubernetes_namespace" "adot" {
+  metadata {
+    labels = {
+      "app.kubernetes.io/component" = "controller-manager"
+    }
+
+    name = "opentelemetry-operator-system"
+  }
+}
+
 module "adot_irsa_role" {
   source = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
 
@@ -80,15 +96,20 @@ module "adot_irsa_role" {
   oidc_providers = {
     main = {
       provider_arn               = module.eks.oidc_provider_arn
-      namespace_service_accounts = ["opentelemetry-operator-system:adot-collector"]
+      namespace_service_accounts = [
+        "opentelemetry-operator-system:aws-otel-collector",
+        "fargate-container-insights:aws-otel-collector"
+      ]
     }
   }
 }
 
-data "aws_eks_addon_version" "adot" {
-  addon_name         = "adot"
-  kubernetes_version = var.cluster_version
-  most_recent        = true
+resource "kubernetes_manifest" "addons_otel_permissions" {
+  for_each = fileset("${path.module}/assets/addons_otel_permissions/", "*.yaml.tftpl")
+
+  manifest = yamldecode(templatefile("${path.module}/assets/addons_otel_permissions/${each.value}", {}))
+
+  depends_on = [kubernetes_namespace.adot]
 }
 
 resource "aws_eks_addon" "adot" {
@@ -99,15 +120,47 @@ resource "aws_eks_addon" "adot" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "PRESERVE"
 
-  depends_on = [helm_release.cert_manager]
+  configuration_values = jsonencode({
+    collector = {
+      serviceAccount = {
+        annotations = {
+          "eks.amazonaws.com/role-arn" = module.adot_irsa_role.iam_role_arn
+        }
+      }
+      resources = {
+        requests = {
+          cpu = "1"
+          memory = "2Gi"
+        }
+        limits = {
+          cpu = "1"
+          memory = "2Gi"
+        }
+      }
+      cloudwatch = {
+        enabled = true
+      }
+    }
+  })
+
+  depends_on = [
+    helm_release.cert_manager,
+    kubernetes_manifest.addons_otel_permissions
+  ]
 }
 
-resource "kubernetes_manifest" "adot_collector" {
-  for_each = fileset("${path.module}/assets/adot_collector/", "*.yaml")
+resource "kubernetes_namespace" "container_insights" {
+  metadata {
+    name = "fargate-container-insights"
+  }
+}
 
-  manifest = yamldecode(templatefile("${path.module}/assets/adot_collector/${each.value}", {
+resource "kubernetes_manifest" "container_insights" {
+  for_each = fileset("${path.module}/assets/container_insights/", "*.yaml.tftpl")
+
+  manifest = yamldecode(templatefile("${path.module}/assets/container_insights/${each.value}", {
     cluster_name = module.eks.cluster_name
-    namespace    = "opentelemetry-operator-system"
+    namespace    = kubernetes_namespace.container_insights.id
     aws_region   = var.aws_region
     aws_role_arn = module.adot_irsa_role.iam_role_arn
   }))
