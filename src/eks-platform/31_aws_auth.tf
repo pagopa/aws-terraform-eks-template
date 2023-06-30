@@ -12,10 +12,10 @@ resource "kubernetes_config_map" "aws_auth" {
         username = "system:node:{{SessionName}}"
       }],
       [for auth in var.eks_auth : {
-          groups   = auth.groups
-          rolearn  = auth.role_arn
-          username = "system:node:{{SessionName}}"
-          noDuplicateARNs = true
+        groups          = auth.groups
+        rolearn         = auth.role_arn
+        username        = "system:node:{{SessionName}}"
+        noDuplicateARNs = true
       }]
     ))
   }
