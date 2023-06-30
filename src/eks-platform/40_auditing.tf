@@ -67,7 +67,7 @@ module "audit_exporter" {
     patterns         = ["!.venv/.*"]
   }
 
-  build_in_docker           = true
+  build_in_docker           = var.build_lambdas_in_docker
   docker_additional_options = ["--platform", "linux/amd64"]
 
   store_on_s3 = true

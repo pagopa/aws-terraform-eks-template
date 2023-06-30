@@ -176,6 +176,12 @@ variable "github_runners_sg_id" {
   type        = string
 }
 
+variable "build_lambdas_in_docker" {
+  description = "Whatever build lambdas in Docker or host"
+  default     = true
+  type        = bool
+}
+
 variable "eks_auth" {
   description = "List of roles and ClusterRoleBindings"
   default     = []

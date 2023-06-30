@@ -19,6 +19,7 @@ permissions:
 env:
   DIR: "src/eks-platform"
   AWS_ENVIRONMENT: dev
+  TF_VAR_build_lambdas_in_docker: false
 
 jobs:
 
