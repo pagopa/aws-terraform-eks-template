@@ -2,6 +2,8 @@ resource "kubernetes_namespace" "keda" {
   metadata {
     name = "keda"
   }
+
+  depends_on = [module.eks]
 }
 
 resource "helm_release" "keda" {
@@ -48,8 +50,8 @@ resource "helm_release" "keda" {
   # }
 }
 
-resource "kubernetes_manifest" "keda_sg" {
-  manifest = {
+resource "kubectl_manifest" "keda_sg" {
+  yaml_body = yamlencode({
     apiVersion = "vpcresources.k8s.aws/v1beta1"
     kind       = "SecurityGroupPolicy"
 
@@ -72,13 +74,15 @@ resource "kubernetes_manifest" "keda_sg" {
         ]
       }
     }
-  }
+  })
 }
 
 resource "kubernetes_namespace" "monitoring" {
   metadata {
     name = "monitoring"
   }
+
+  depends_on = [module.eks]
 }
 
 resource "helm_release" "metrics_server" {
@@ -109,8 +113,8 @@ resource "helm_release" "metrics_server" {
   }
 }
 
-resource "kubernetes_manifest" "metrics_server_sg" {
-  manifest = {
+resource "kubectl_manifest" "metrics_server_sg" {
+  yaml_body = yamlencode({
     apiVersion = "vpcresources.k8s.aws/v1beta1"
     kind       = "SecurityGroupPolicy"
 
@@ -133,7 +137,7 @@ resource "kubernetes_manifest" "metrics_server_sg" {
         ]
       }
     }
-  }
+  })
 }
 
 resource "helm_release" "prometheus" {

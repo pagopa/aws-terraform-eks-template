@@ -70,6 +70,8 @@ resource "helm_release" "cert_manager" {
     name  = "acmesolver.image.tag"
     value = var.cert_manager.acmesolver.image_tag
   }
+
+  depends_on = [module.eks]
 }
 
 resource "kubernetes_namespace" "adot" {
@@ -80,6 +82,8 @@ resource "kubernetes_namespace" "adot" {
 
     name = "opentelemetry-operator-system"
   }
+
+  depends_on = [module.eks]
 }
 
 module "adot_irsa_role" {
@@ -104,10 +108,10 @@ module "adot_irsa_role" {
   }
 }
 
-resource "kubernetes_manifest" "addons_otel_permissions" {
+resource "kubectl_manifest" "addons_otel_permissions" {
   for_each = fileset("${path.module}/assets/addons_otel_permissions/", "*.yaml.tftpl")
 
-  manifest = yamldecode(templatefile("${path.module}/assets/addons_otel_permissions/${each.value}", {}))
+  yaml_body = templatefile("${path.module}/assets/addons_otel_permissions/${each.value}", {})
 
   depends_on = [kubernetes_namespace.adot]
 }
@@ -145,7 +149,7 @@ resource "aws_eks_addon" "adot" {
 
   depends_on = [
     helm_release.cert_manager,
-    kubernetes_manifest.addons_otel_permissions
+    kubectl_manifest.addons_otel_permissions
   ]
 }
 
@@ -155,15 +159,15 @@ resource "kubernetes_namespace" "container_insights" {
   }
 }
 
-resource "kubernetes_manifest" "container_insights" {
+resource "kubectl_manifest" "container_insights" {
   for_each = fileset("${path.module}/assets/container_insights/", "*.yaml.tftpl")
 
-  manifest = yamldecode(templatefile("${path.module}/assets/container_insights/${each.value}", {
+  yaml_body = templatefile("${path.module}/assets/container_insights/${each.value}", {
     cluster_name = module.eks.cluster_name
     namespace    = kubernetes_namespace.container_insights.id
     aws_region   = var.aws_region
     aws_role_arn = module.adot_irsa_role.iam_role_arn
-  }))
+  })
 
   depends_on = [aws_eks_addon.adot]
 }

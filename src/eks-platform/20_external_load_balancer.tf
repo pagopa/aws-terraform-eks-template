@@ -82,7 +82,7 @@ module "nlb" {
 
 
 data "aws_network_interface" "nlb" {
-  for_each = toset(aws_subnet.this[*].id)
+  count = length(aws_subnet.this)
 
   filter {
     name   = "description"
@@ -96,7 +96,7 @@ data "aws_network_interface" "nlb" {
 
   filter {
     name   = "subnet-id"
-    values = [each.value]
+    values = [aws_subnet.this[count.index].id]
   }
 }
 

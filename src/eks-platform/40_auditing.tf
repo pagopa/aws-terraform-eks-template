@@ -87,6 +87,8 @@ module "audit_exporter" {
 
 data "aws_cloudwatch_log_group" "eks" {
   name = "/aws/eks/${module.eks.cluster_name}/cluster"
+
+  depends_on = [module.eks]
 }
 
 resource "aws_lambda_permission" "audit_exporter" {

@@ -61,6 +61,14 @@ module "eks" {
   kms_key_administrators = var.kms_auth.admins
   kms_key_service_users = var.kms_auth.services
   kms_key_users = var.kms_auth.users
+
+  manage_aws_auth_configmap = true
+  aws_auth_roles = [for auth in var.eks_auth : {
+    groups          = auth.groups
+    rolearn         = auth.role_arn
+    username        = "system:node:{{SessionName}}"
+    noDuplicateARNs = true
+  }]
 }
 
 resource "aws_security_group_rule" "allow_lb_connections" {
