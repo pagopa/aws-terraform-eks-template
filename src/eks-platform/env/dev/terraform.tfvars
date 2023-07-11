@@ -2,8 +2,8 @@ env_short   = "d"
 environment = "dev"
 app_name    = "dvopla"
 
-vpc_id                 = "vpc-07e680d083d85f636"
-nat_gateway_ids        = ["nat-0d7267450a50bd589"]
+vpc_id                 = "vpc-0e0d4f97216bd34c9"
+nat_gateway_ids        = ["nat-022a432e130dafd72"]
 enable_public_endpoint = true
 
 aws_load_balancer_controller = {
@@ -93,7 +93,7 @@ cert_manager = {
   }
 }
 
-github_runners_sg_id = "sg-02d3b6b7a8df9c9ee"
+github_runners_sg_id = "sg-0bdb002baaf6a9d03"
 
 eks_auth = [
   {
