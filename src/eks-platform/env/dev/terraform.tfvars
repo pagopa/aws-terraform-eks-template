@@ -110,7 +110,7 @@ eks_auth = [
   },
   {
     groups   = ["system:masters"]
-    role_arn = "arn:aws:iam::794703684555:role/aws-reserved/sso.amazonaws.com/eu-west-1/AWSReservedSSO_FullAdmin_063e61c9a8368ff2"
+    role_arn = "arn:aws:iam::794703684555:role/AWSReservedSSO_FullAdmin_063e61c9a8368ff2"
   }
 ]
 

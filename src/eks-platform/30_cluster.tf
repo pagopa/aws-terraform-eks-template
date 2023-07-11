@@ -66,7 +66,7 @@ module "eks" {
   aws_auth_roles = [for auth in var.eks_auth : {
     groups          = auth.groups
     rolearn         = auth.role_arn
-    username        = "system:node:{{SessionName}}"
+    username        = "cluster-admin"
     noDuplicateARNs = true
   }]
 }
