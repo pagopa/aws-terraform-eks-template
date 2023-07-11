@@ -57,7 +57,7 @@ module "audit_exporter" {
   function_name = "${local.project}-eks-audit-exporter"
   description   = "Export EKS audit logs from CloudWatch and uploads them to S3"
   handler       = "app.lambda_handler"
-  runtime       = "python3.8"
+  runtime       = "python3.10"
   timeout       = 5
   architectures = ["x86_64"]
 
