@@ -41,21 +41,6 @@ jobs:
           ecs_task_subnet_id: ${{ secrets.SUBNET_ID }}
           ecs_task_sec_group: ${{ secrets.SEC_GROUP_ID }}
           pat_token: ${{ secrets.BOT_TOKEN }}
-      - name: testpre
-        id: testpre
-        shell: bash
-        run: |
-          MYTEST="something"
-          # echo "::set-output name=mytest::${MYTEST}"
-          echo "MYTEST_OUT=${MYTEST}" >> $GITHUB_OUTPUT
-      - name: test
-        id: test
-        shell: bash
-        run: |
-          echo ${{ steps.testpre.outputs.mytest }}
-          echo ${{ steps.testpre.outputs.MYTEST }}
-          echo ${{ steps.testpre.outputs.mytest_out }}
-          echo ${{ steps.testpre.outputs.MYTEST_OUT }}
 
   terraform_plan_job:
     name: Terraform Plan

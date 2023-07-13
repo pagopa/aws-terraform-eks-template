@@ -6,7 +6,7 @@ enable_one_natgw_per_az = false
 
 github_runners = {
   subnet_cidr = "10.0.250.192/26"
-  image_uri   = "ghcr.io/pagopa/interop-github-runner-aws:v1.10.0"
+  image_uri   = "ghcr.io/pagopa/github-self-hosted-runner-aws:v1.0.0"
   cpu         = 1024
   memory      = 2048
 }
