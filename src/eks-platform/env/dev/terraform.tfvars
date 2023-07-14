@@ -122,7 +122,7 @@ kms_auth = {
     "arn:aws:iam::794703684555:role/aws-reserved/sso.amazonaws.com/eu-west-1/AWSReservedSSO_FullAdmin_063e61c9a8368ff2"
   ]
   services = []
-  users = []
+  users    = []
 }
 
 tags = {

@@ -193,14 +193,14 @@ variable "eks_auth" {
 
 variable "kms_auth" {
   description = "List of principal arns to access EKS encryption keys"
-  default     = {
-    admins = []
+  default = {
+    admins   = []
     services = []
-    users = []
+    users    = []
   }
   type = object({
     admins   = list(string) # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html#key-policy-default-allow-administrators
     services = list(string) # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html#key-policy-service-integration
-    users = list(string) # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html#key-policy-default-allow-users
+    users    = list(string) # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html#key-policy-default-allow-users
   })
 }

@@ -59,8 +59,8 @@ module "eks" {
   )
 
   kms_key_administrators = var.kms_auth.admins
-  kms_key_service_users = var.kms_auth.services
-  kms_key_users = var.kms_auth.users
+  kms_key_service_users  = var.kms_auth.services
+  kms_key_users          = var.kms_auth.users
 
   manage_aws_auth_configmap = true
   aws_auth_roles = [for auth in var.eks_auth : {
