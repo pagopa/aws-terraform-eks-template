@@ -62,14 +62,6 @@ jobs:
         id: setup-version
         uses: pagopa/eng-github-actions-iac-template/terraform/terraform-install-action@main
 
-      - name: Setup kubectl
-        id: configure-context
-        uses: pagopa/eng-github-actions-iac-template/aws/kubectl-eks-action@aws-actions
-        with:
-          aws_iam_role: ${{ secrets.AWS_IAM_ROLE_READ_ONLY }}
-          aws_region: ${{ secrets.AWS_REGION }}
-          eks_cluster_name: ${{ secrets.EKS_CLUSTER_NAME }}
-
       - name: Terraform plan
         uses: pagopa/eng-github-actions-iac-template/aws/terraform-plan-aws-action@aws-actions
         with:
@@ -97,14 +89,6 @@ jobs:
       - name: Setup terraform
         id: setup-version
         uses: pagopa/eng-github-actions-iac-template/terraform/terraform-install-action@main
-
-      - name: Setup kubectl
-        id: configure-context
-        uses: pagopa/eng-github-actions-iac-template/aws/kubectl-eks-action@aws-actions
-        with:
-          aws_iam_role: ${{ secrets.AWS_IAM_ROLE_READ_ONLY }}
-          aws_region: ${{ secrets.AWS_REGION }}
-          eks_cluster_name: ${{ secrets.EKS_CLUSTER_NAME }}
 
       - name: Terraform preapply
         uses: pagopa/eng-github-actions-iac-template/aws/terraform-preapply-aws-action@aws-actions
