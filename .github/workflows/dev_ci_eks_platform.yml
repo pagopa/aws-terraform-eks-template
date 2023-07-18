@@ -1,4 +1,4 @@
-name: CD on DEV core
+name: CI on DEV eks-platform
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
       - synchronize
       - reopened
     paths:
-      - 'src/core/**'
+      - 'src/eks-platform/**'
       - '.github/workflows/dev**'
 
 permissions:
@@ -17,8 +17,9 @@ permissions:
   contents: read
 
 env:
-  DIR: "src/core"
+  DIR: "src/eks-platform"
   AWS_ENVIRONMENT: dev
+  TF_VAR_build_lambdas_in_docker: false
 
 jobs:
 
@@ -43,11 +44,11 @@ jobs:
           ecs_task_sec_group: ${{ secrets.SEC_GROUP_ID }}
           pat_token: ${{ secrets.BOT_TOKEN }}
 
-  terraform_apply_job:
-    name: Terraform Apply
+  terraform_plan_job:
+    name: Terraform Plan
     runs-on: [self-hosted, "${{ needs.create_runner.outputs.runner_name }}"]
-    environment: dev-cd
-    needs: [create_runner]
+    environment: dev-ci
+    needs: create_runner
     steps:
       - name: Checkout
         id: checkout
@@ -61,18 +62,10 @@ jobs:
         id: setup-version
         uses: pagopa/eng-github-actions-iac-template/terraform/terraform-install-action@main
 
-      - name: Terraform preapply
-        uses: pagopa/eng-github-actions-iac-template/aws/terraform-preapply-aws-action@aws-actions
+      - name: Terraform plan
+        uses: pagopa/eng-github-actions-iac-template/aws/terraform-plan-aws-action@aws-actions
         with:
-          aws_iam_role: ${{ secrets.AWS_IAM_ROLE_ADMIN }}
-          aws_region: ${{ secrets.AWS_REGION }}
-          dir: ${{ env.DIR }}
-          aws_environment: ${{ env.AWS_ENVIRONMENT }}
-
-      - name: Terraform apply
-        uses: pagopa/eng-github-actions-iac-template/aws/terraform-apply-aws-action@aws-actions
-        with:
-          aws_iam_role: ${{ secrets.AWS_IAM_ROLE_ADMIN }}
+          aws_iam_role: ${{ secrets.AWS_IAM_ROLE_READ_ONLY }}
           aws_region: ${{ secrets.AWS_REGION }}
           dir: ${{ env.DIR }}
           aws_environment: ${{ env.AWS_ENVIRONMENT }}
@@ -82,7 +75,7 @@ jobs:
     if: always()
     runs-on: ubuntu-22.04
     environment: dev-runner
-    needs: [create_runner, terraform_apply_job]
+    needs: [create_runner, terraform_plan_job]
     steps:
       - name: Cleanup GitHub Runner
         id: cleanup_github_runner
