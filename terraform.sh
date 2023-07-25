@@ -37,7 +37,7 @@ parse_params() {
   env=$1
   shift 1
 
-  args=("$@")
+  args="$@"
 }
 
 load_awscli_profile() {

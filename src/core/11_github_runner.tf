@@ -166,6 +166,7 @@ resource "aws_ecs_task_definition" "github_runner" {
   ])
 }
 
+#tfsec:ignore:aws-ec2-no-public-egress-sgr
 resource "aws_security_group" "github_runners" {
   description = "SG for Github runners"
   vpc_id      = module.vpc.vpc_id

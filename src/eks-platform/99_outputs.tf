@@ -33,9 +33,19 @@ output "cluster_alb_name" {
   value       = "${local.project}-alb"
 }
 
+output "cluster_security_group_id" {
+  description = "Id of the default cluster security group id"
+  value       = module.eks.cluster_primary_security_group_id
+}
+
 output "cluster_oidc_provider_arn" {
   description = "OIDC provider arn of the cluster"
   value       = module.eks.oidc_provider_arn
+}
+
+output "external_alb_listener_arns" {
+  description = "ARN of the listeners (TCP and HTTP) configured in the external cluster ALB"
+  value       = module.alb.http_tcp_listener_arns
 }
 
 output "vpc_link_id" {
