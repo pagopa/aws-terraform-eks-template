@@ -14,9 +14,3 @@ autoscaling:
       metricType: Utilization
       metadata:
         value: "50"
-
-ingress:
-  create: true
-  load_balancer_name: dvopla-d-alb
-  path: "/"
-  pathType: Prefix

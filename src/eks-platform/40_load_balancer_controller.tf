@@ -15,51 +15,55 @@ module "load_balancer_irsa_role" {
   }
 }
 
-# Use plain helm_release resource
-module "aws_load_balancer_controller" {
-  source  = "terraform-module/release/helm"
-  version = "2.8.0"
-
+resource "helm_release" "aws_load_balancer_controller" {
+  name       = "aws-load-balancer-controller"
+  chart      = "aws-load-balancer-controller"
+  version    = var.aws_load_balancer_controller.chart_version
   repository = "https://aws.github.io/eks-charts"
   namespace  = var.aws_load_balancer_controller.namespace
 
-  app = {
-    name          = "aws-load-balancer-controller"
-    chart         = "aws-load-balancer-controller"
-    version       = var.aws_load_balancer_controller.helm_version
-    wait          = false
-    recreate_pods = true
-    deploy        = 1
+  set {
+    name  = "image.aws_load_balancer_controller.repository"
+    value = var.aws_load_balancer_controller.image_name
   }
 
-  set = [
-    {
-      name  = "clusterName"
-      value = module.eks.cluster_name
-    },
-    {
-      name  = "replicaCount"
-      value = var.aws_load_balancer_controller.replica_count
-    },
-    {
-      name  = "serviceAccount.create"
-      value = "true"
-    },
-    {
-      name  = "serviceAccount.name"
-      value = var.aws_load_balancer_controller.service_account_name
-    },
-    {
-      name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-      value = module.load_balancer_irsa_role.iam_role_arn
-    },
-    {
-      name  = "region"
-      value = var.aws_region
-    },
-    {
-      name  = "vpcId"
-      value = var.vpc_id
-    }
-  ]
+  set {
+    name  = "image.aws_load_balancer_controller.tag"
+    value = var.aws_load_balancer_controller.image_tag
+  }
+
+  set {
+    name  = "clusterName"
+    value = module.eks.cluster_name
+  }
+
+  set {
+    name  = "replicaCount"
+    value = var.aws_load_balancer_controller.replica_count
+  }
+
+  set {
+    name  = "serviceAccount.create"
+    value = "true"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = var.aws_load_balancer_controller.service_account_name
+  }
+
+  set {
+    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = module.load_balancer_irsa_role.iam_role_arn
+  }
+
+  set {
+    name  = "region"
+    value = var.aws_region
+  }
+
+  set {
+    name  = "vpcId"
+    value = var.vpc_id
+  }
 }

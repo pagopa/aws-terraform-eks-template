@@ -2,6 +2,8 @@ module "alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = ">= 8.3.1"
 
+  enable_deletion_protection = true
+
   name               = "${local.project}-alb"
   internal           = true
   load_balancer_type = "application"
@@ -9,13 +11,12 @@ module "alb" {
   subnets            = aws_subnet.this[*].id
 
   security_group_rules = {
-    ingress_all_http = {
-      type        = "ingress"
-      from_port   = 80
-      to_port     = 80
+    egress_all = {
+      type        = "egress"
+      from_port   = 1
+      to_port     = 65535
       protocol    = "tcp"
-      description = "HTTP web traffic"
-      # source_security_group_id = module.nlb.security_group_id
+      description = "All traffic"
       cidr_blocks = ["0.0.0.0/0"]
     }
   }
@@ -27,23 +28,18 @@ module "alb" {
       action_type = "fixed-response"
 
       fixed_response = {
-        message_body = jsonencode({ error = "No sevice available" })
-        status_code  = 418
-        content_type = "application/json"
+        status_code  = 403
+        content_type = "text/plain"
       }
     }
   ]
-
-  tags = {
-    "elbv2.k8s.aws/cluster"    = module.eks.cluster_name
-    "ingress.k8s.aws/resource" = "LoadBalancer"
-    "ingress.k8s.aws/stack"    = "${local.project}-alb"
-  }
 }
 
 module "nlb" {
   source  = "terraform-aws-modules/alb/aws"
   version = ">= 8.3.1"
+
+  enable_deletion_protection = true
 
   name               = "${local.project}-nlb"
   internal           = true
@@ -82,4 +78,34 @@ module "nlb" {
       }
     }
   ]
+}
+
+
+data "aws_network_interface" "nlb" {
+  count = length(aws_subnet.this)
+
+  filter {
+    name   = "description"
+    values = ["ELB ${module.nlb.lb_arn_suffix}"]
+  }
+
+  filter {
+    name   = "interface-type"
+    values = ["network_load_balancer"]
+  }
+
+  filter {
+    name   = "subnet-id"
+    values = [aws_subnet.this[count.index].id]
+  }
+}
+
+resource "aws_security_group_rule" "allow_nlb_connections" {
+  security_group_id = module.alb.security_group_id
+  description       = "Allow access from NLB"
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = [for eni in data.aws_network_interface.nlb : "${eni.private_ip}/32"]
 }

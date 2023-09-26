@@ -1,5 +1,5 @@
 environment       = "Dev"
-github_repository = "https://github.com/pagopa/aws-terraform-eks-template"
+github_repository = "pagopa/aws-terraform-eks-template"
 
 tags = {
   CreatedBy   = "Terraform"

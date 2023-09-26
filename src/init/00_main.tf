@@ -82,6 +82,10 @@ data "aws_iam_policy" "admin_access" {
   name = "AdministratorAccess"
 }
 
+data "aws_iam_policy" "read_only_access" {
+  name = "ReadOnlyAccess"
+}
+
 data "aws_caller_identity" "current" {}
 
 resource "aws_iam_openid_connect_provider" "github" {
@@ -91,8 +95,10 @@ resource "aws_iam_openid_connect_provider" "github" {
 }
 
 resource "aws_iam_role" "githubiac" {
-  name        = "GitHubActionIACRole"
-  description = "Role to assume to create the infrastructure."
+  for_each = toset(["Admin", "ReadOnly", "ECSRunner"])
+
+  name        = "GitHubActionIAC${each.value}"
+  description = "Role assumed by GitHub to manage infrastructure"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -117,7 +123,37 @@ resource "aws_iam_role" "githubiac" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "githubiac" {
-  role       = aws_iam_role.githubiac.name
+resource "aws_iam_role_policy_attachment" "githubiac_admin" {
+  role       = aws_iam_role.githubiac["Admin"].name
   policy_arn = data.aws_iam_policy.admin_access.arn
+}
+
+resource "aws_iam_role_policy_attachment" "githubiac_ro" {
+  role       = aws_iam_role.githubiac["ReadOnly"].name
+  policy_arn = data.aws_iam_policy.read_only_access.arn
+}
+
+resource "aws_iam_role_policy" "extra_githubiac_ecsrunner" {
+  role = aws_iam_role.githubiac["ECSRunner"].name
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid    = "TaskOperations"
+        Effect = "Allow"
+        Action = [
+          "ecs:RunTask",
+          "ecs:StopTask"
+        ]
+        Resource = "*"
+      },
+      {
+        Sid      = "AssumeExec"
+        Effect   = "Allow"
+        Action   = "iam:PassRole"
+        Resource = "*" # TODO restrict this one
+      }
+    ]
+  })
 }

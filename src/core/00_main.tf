@@ -19,5 +19,5 @@ provider "aws" {
 }
 
 locals {
-  project = format("%s-%s", var.app_name, var.env_short)
+  project = "${var.app_name}-${var.env_short}"
 }

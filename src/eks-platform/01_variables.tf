@@ -65,25 +65,142 @@ variable "cluster_version" {
 variable "aws_load_balancer_controller" {
   description = "AWS Load Balancer controller configuration"
   type = object({
-    helm_version         = string
+    chart_version        = string
     replica_count        = number
     namespace            = string
     service_account_name = string
+    image_name           = string
+    image_tag            = string
   })
 }
 
 variable "keda" {
   description = "Keda configuration"
   type = object({
-    helm_version = string
-    namespace    = string
+    chart_version = string
+    namespace     = string
+    keda = object({
+      image_name = string
+      image_tag  = string
+    })
+    metrics_api_server = object({
+      image_name = string
+      image_tag  = string
+    })
+    webhooks = object({
+      image_name = string
+      image_tag  = string
+    })
+
+  })
+}
+variable "prometheus" {
+  description = "Prometheus configuration"
+  type = object({
+    chart_version = string,
+    configmap_reload_prometheus = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    node_exporter = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    server = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    pushgateway = object({
+      image_name = string,
+      image_tag  = string,
+    }),
   })
 }
 
 variable "metrics_server" {
   description = "K8s metrics server configuration"
   type = object({
-    helm_version = string
-    namespace    = string
+    chart_version = string
+    namespace     = string
+    image_name    = string
+    image_tag     = string
+  })
+}
+
+variable "reloader" {
+  description = "Reloader configuration"
+  type = object({
+    chart_version = string
+    image_name    = string
+    image_tag     = string
+  })
+}
+
+variable "cert_manager" {
+  description = "CertManager configuration"
+  type = object({
+    chart_version = string
+    namespace     = string
+    controller = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    cainjector = object({
+      image_name = string,
+      image_tag  = string,
+    }),
+    webhook = object({
+      image_name = string,
+      image_tag  = string,
+    })
+    startupapicheck = object({
+      image_name = string,
+      image_tag  = string,
+    })
+    acmesolver = object({
+      image_name = string,
+      image_tag  = string,
+    })
+  })
+}
+
+variable "sentinel_bucket_arn" {
+  description = "S3 bucket arn connect to sentinel"
+  default     = null
+  type        = string
+}
+
+variable "github_runners_sg_id" {
+  description = "Security group of the GitHub Runners"
+  default     = null
+  type        = string
+}
+
+variable "build_lambdas_in_docker" {
+  description = "Whatever build lambdas in Docker or host"
+  default     = true
+  type        = bool
+}
+
+variable "eks_auth" {
+  description = "List of roles and ClusterRoleBindings"
+  default     = []
+  type = list(object({
+    groups   = list(string)
+    role_arn = string
+  }))
+}
+
+variable "kms_auth" {
+  description = "List of principal arns to access EKS encryption keys"
+  default = {
+    admins   = []
+    services = []
+    users    = []
+  }
+  type = object({
+    admins   = list(string) # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html#key-policy-default-allow-administrators
+    services = list(string) # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html#key-policy-service-integration
+    users    = list(string) # https://docs.aws.amazon.com/kms/latest/developerguide/key-policy-default.html#key-policy-default-allow-users
   })
 }

@@ -46,9 +46,9 @@ variable "public_subnets_cidr" {
   type        = list(string)
 }
 
-variable "enable_single_nat_gateway" {
+variable "enable_one_natgw_per_az" {
   description = "Whether to use a single NAT gateway or one NAT gateway per AZ"
-  default     = false
+  default     = true
   type        = bool
 }
 
@@ -56,4 +56,14 @@ variable "map_public_ip_on_launch" {
   description = "Whether instances in public subnets should be assigned a public ip address"
   default     = false
   type        = bool
+}
+
+variable "github_runners" {
+  description = "GH runners configuration"
+  type = object({
+    subnet_cidr = string
+    image_uri   = string
+    cpu         = number
+    memory      = number
+  })
 }

@@ -1,6 +1,6 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 19.7.0"
+  version = "~> 19.15.3"
 
   cluster_name                   = local.project
   cluster_version                = var.cluster_version
@@ -10,10 +10,15 @@ module "eks" {
 
   cluster_addons = {
     kube-proxy = {
-      most_recent = true
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "PRESERVE"
     }
     vpc-cni = {
-      most_recent = true
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "PRESERVE"
+
       configuration_values = jsonencode({
         env = {
           ENABLE_POD_ENI = "true"
@@ -21,7 +26,10 @@ module "eks" {
       })
     }
     coredns = {
-      most_recent = true
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "PRESERVE"
+
       configuration_values = jsonencode({
         computeType = "Fargate"
       })
@@ -49,6 +57,18 @@ module "eks" {
       }
     }
   )
+
+  kms_key_administrators = var.kms_auth.admins
+  kms_key_service_users  = var.kms_auth.services
+  kms_key_users          = var.kms_auth.users
+
+  manage_aws_auth_configmap = true
+  aws_auth_roles = [for auth in var.eks_auth : {
+    groups          = auth.groups
+    rolearn         = auth.role_arn
+    username        = "cluster-admin"
+    noDuplicateARNs = true
+  }]
 }
 
 resource "aws_security_group_rule" "allow_lb_connections" {
@@ -60,4 +80,17 @@ resource "aws_security_group_rule" "allow_lb_connections" {
   to_port                  = 65535
   protocol                 = "all"
   source_security_group_id = module.alb.security_group_id
+}
+
+resource "aws_security_group_rule" "allow_ecs_github_runners" {
+  count = var.github_runners_sg_id == null ? 0 : 1
+
+  security_group_id = module.eks.cluster_primary_security_group_id
+  description       = "Allow access from ECS GH runners cluster"
+
+  type                     = "ingress"
+  from_port                = 443
+  to_port                  = 443
+  protocol                 = "TCP"
+  source_security_group_id = var.github_runners_sg_id
 }

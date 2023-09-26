@@ -1,3 +1,8 @@
+locals {
+  project          = "${var.app_name}-${var.env_short}"
+  aws_lb_role_name = "aws-load-balancer-controller"
+}
+
 terraform {
   required_version = ">= 1.3.1"
 
@@ -13,31 +18,56 @@ terraform {
       source  = "hashicorp/kubernetes"
       version = "~> 2.17.0"
     }
+
+    # Reason why of this provider https://github.com/hashicorp/terraform-provider-kubernetes/issues/1775
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.7.0"
+    }
   }
 }
 
 provider "aws" {
   region = var.aws_region
+
   default_tags {
     tags = var.tags
   }
 }
 
 provider "kubernetes" {
-  config_path    = "~/.kube/config"
-  config_context = "arn:aws:eks:eu-south-1:794703684555:cluster/dvopla-d"
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+    command     = "aws"
+  }
 }
 
 provider "helm" {
   kubernetes {
-    config_path    = "~/.kube/config"
-    config_context = "arn:aws:eks:eu-south-1:794703684555:cluster/dvopla-d"
+    host                   = module.eks.cluster_endpoint
+    cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+
+    exec {
+      api_version = "client.authentication.k8s.io/v1beta1"
+      args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+      command     = "aws"
+    }
   }
 }
 
-locals {
-  project          = format("%s-%s", var.app_name, var.env_short)
-  aws_lb_role_name = "aws-load-balancer-controller"
-}
+provider "kubectl" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
 
-data "aws_caller_identity" "current" {}
+  load_config_file = false
+
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    args        = ["eks", "get-token", "--cluster-name", module.eks.cluster_name]
+    command     = "aws"
+  }
+}

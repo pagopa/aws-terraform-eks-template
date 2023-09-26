@@ -4,6 +4,8 @@ Terraform template repository for infrastructures projects
 
 ![Architecture diagram](docs/exports/architecture_phase1.png)
 
+![K8s diagram](docs/exports/k8s_architecture.png)
+
 ## How to use this template
 
 ### Terraform folders name convention

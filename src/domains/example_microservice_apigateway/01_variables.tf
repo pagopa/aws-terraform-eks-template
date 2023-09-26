@@ -33,6 +33,21 @@ variable "cluster_nlb_url" {
   type        = string
 }
 
+variable "cluster_security_group_id" {
+  description = "Security group id of the EKS cluster"
+  type        = string
+}
+
+variable "vpc_id" {
+  description = "VPC id to deploy the ALB target group"
+  type        = string
+}
+
+variable "alb_listener_arn" {
+  description = "ARN of the ALB listener"
+  type        = string
+}
+
 variable "vpc_link_id" {
   description = "VPC link id targeting cluster NLB"
   type        = string
@@ -41,6 +56,15 @@ variable "vpc_link_id" {
 variable "namespace" {
   description = "Kubernetes namespace to release these services into"
   type        = string
+}
+
+variable "reloader" {
+  description = "Reloader configuration"
+  type = object({
+    chart_version = string
+    image_name    = string
+    image_tag     = string
+  })
 }
 
 variable "cors_fqdn" {
