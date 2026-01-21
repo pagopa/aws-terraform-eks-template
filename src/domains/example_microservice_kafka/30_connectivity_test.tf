@@ -18,7 +18,7 @@ resource "kubernetes_job" "kcat" {
         restart_policy = "Never"
 
         container {
-          image = "edenhill/kcat:1.7.1"
+          image = "edenhill/kcat:1.7.1@sha256:8f16a5fed099931ce1122420b7473efe467ff9841d53680b99db25dd1723d711"
           name  = var.app_name
           args = [
             "-b", aws_msk_cluster.this.bootstrap_brokers,

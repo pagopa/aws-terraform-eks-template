@@ -18,7 +18,7 @@ resource "kubernetes_job" "redis" {
         restart_policy = "Never"
 
         container {
-          image   = "redis"
+          image   = "redis@sha256:73dad4271642c5966db88db7a7585fae7cf10b685d1e48006f31e0294c29fdd7"
           name    = var.app_name
           command = ["redis-cli"]
           args = [

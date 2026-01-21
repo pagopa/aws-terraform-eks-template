@@ -18,7 +18,7 @@ resource "kubernetes_job" "psql" {
         restart_policy = "Never"
 
         container {
-          image   = "postgres"
+          image   = "postgres@sha256:5773fe724c49c42a7a9ca70202e11e1dff21fb7235b335a73f39297d200b73a2"
           name    = var.app_name
           command = ["psql"]
           args = [

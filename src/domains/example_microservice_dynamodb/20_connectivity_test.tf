@@ -42,7 +42,7 @@ resource "kubernetes_job" "awscli" {
         service_account_name = kubernetes_service_account.database_reader.metadata[0].name
 
         container {
-          image = "amazon/aws-cli"
+          image = "amazon/aws-cli@sha256:2c7eda718147deb6d916e140bb1f68d859150f05895d6594d46b52f564c38be2"
           name  = var.app_name
           args  = ["dynamodb", "get-item", "--table-name", aws_dynamodb_table.entries.name, "--key", "Type={S=counter}"]
 
